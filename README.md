@@ -8,6 +8,3 @@ Dominic Kesto
 Abdullah Ahamed
 <br>
 Daniel Xu
-
-<br>
-Hello this is a test.
