@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Sign Up</h2>
+        <form id="signup-form">
+            <label for="signup-email">Email</label>
+            <input type="email" id="signup-email" placeholder="Email" required>
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" placeholder="Password" required>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="signin.html">Sign in here</a></p>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+
+    <!-- Firebase Configuration and App Initialization -->
+    <script type="module">
+        // Import necessary functions
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA2LC916BFUO-LHC25Gek0y595GxFQA0ds",
+            authDomain: "house-rentals-12c7d.firebaseapp.com",
+            projectId: "house-rentals-12c7d",
+            storageBucket: "house-rentals-12c7d.appspot.com",
+            messagingSenderId: "38104073059",
+            appId: "1:38104073059:web:19f5fe83b6601f29474956",
+            measurementId: "G-54J13NNWH7"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Sign Up functionality
+        document.getElementById('signup-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert('Account created successfully');
+                    // Redirect or update UI as needed
+                })
+                .catch((error) => {
+                    alert('Error: ' + error.message);
+                });
+        });
+    </script>
+</body>
+</html>
