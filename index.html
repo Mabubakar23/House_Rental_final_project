@@ -2,198 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Renting homes</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f8f8;
-        }
-        /* Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background-color: white;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        nav {
-            display: flex;
-            gap: 20px;
-        }
-        nav a {
-            text-decoration: none;
-            color: #333;
-            font-size: 1rem;
-            font-weight: 500;
-        }
-        /* Hero Section */
-        .hero {
-            background: url('hero-image.jpg') no-repeat center center/cover;
-            height: 85vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: white;
-            padding: 20px;
-        }
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .hero p {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-        }
-        /* Search Bar */
-        .search-bar {
-            display: flex;
-            background-color: white;
-            border-radius: 40px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            width: 50%;
-            max-width: 800px;
-            margin: 20px auto;
-        }
-        .search-bar input {
-            flex-grow: 1;
-            border: none;
-            padding: 10px;
-            font-size: 1.2rem;
-            border-radius: 40px;
-            outline: none;
-        }
-        .search-bar button {
-            padding: 10px 20px;
-            background-color: #FF385C;
-            color: white;
-            border: none;
-            border-radius: 40px;
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-        /* About Us Section */
-        .about {
-            padding: 60px 20px;
-            text-align: center;
-            background-color: #fff;
-        }
-        .about h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        .about p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto;
-            color: #555;
-        }
-        /* Placeholder Section */
-        .solutions {
-            padding: 60px 20px;
-            text-align: center;
-        }
-        .solutions h2 {
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-        }
-        .Placeholder-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        .Placeholder-item {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            text-align: left;
-        }
-        .Placeholder-item h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-        .Placeholder-item p {
-            color: #666;
-        }
-        /* Footer */
-        footer {
-            background-color: #333;
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        footer a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-    </style>
+    <meta name=" viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentals</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <!-- Header -->
     <header>
-        <div class="logo">AI Impact Solutions</div>
         <nav>
-            <a href="#">Home</a>
-            <a href="#">About Us</a>
-            <a href="#">Place Holder</a>
-            <a href="#">Resources</a>
-            <a href="#">Contact Us</a>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
         </nav>
     </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>Place Holder</h1>
-        <p>Place Holder</p>
-        <!-- Search Bar -->
-        <div class="search-bar">
-            <input type="text" placeholder="something blah blah">
+    <main>
+        <section class="hero">
+            <h1>Find your dream home</h1>
+            <p>Explore our collection of unique homes and experiences</p>
             <button>Search</button>
-        </div>
-    </section>
-
-    <!-- About Us Section -->
-    <section class="about">
-        <h2>names</h2>
-        <p>discription</p>
-    </section>
-
-    <!-- Place Holder Section -->
-    <section class="Placeholder">
-        <h2>Place Holder</h2>
-        <div class="Placeholder-grid">
-            <div class="Placeholder-item">
-                <h3>Place Holder</h3>
-                <p>Mission statement maybe?</p>
-            </div>
-            <div class="Placeholder-item">
-                <h3>Place Holder</h3>
-                <p>Another statement what we stand for?</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
+        </section>
+        <section class="features">
+            <h2>What makes us special</h2>
+            <ul>
+                <li>
+                    <img src="pngimg" alt="Unique homes">
+                    <h3>Unique homes</h3>
+                    <p>From cozy apartments to spacious villas</p>
+                </li>
+                <li>
+                    <img src="pngimg" alt="Local experiences">
+                    <h3>Local experiences</h3>
+                    <p>Immerse yourself in the local culture</p>
+                </li>
+                <li>
+                    <img src="pngimg" alt="options">
+                    <h3> options</h3>
+                    <p>Bring your friends along</p>
+                </li>
+            </ul>
+        </section>
+        <section class="call-to-action">
+            <h2>Ready to start your journey?</h2>
+            <button>Sign up</button>
+        </section>
+    </main>
     <footer>
-        <p>Follow us on <a href="#">Twitter</a></p>
-        
+        <p></p>
     </footer>
-
 </body>
 </html>
