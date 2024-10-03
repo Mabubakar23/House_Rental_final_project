@@ -1,19 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-  
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-  
-<body>
-        <div class="contact-info">
-            <h3>Our Contact Information</h3>
-            <p>Email: contact@example.com</p>
-            <p>Phone: (123) 456-7890</p>
-            <p>Address: 123 Main Street, City, Country</p>
-        </div>
-    </div>
 
+<body>
+			<!-- Navigation Bar -->
+    <nav>
+        <ul>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="login.html">Login/Signup</a></li>
+			<li><a href="dashboard.html">Rental Portal</a></li>
+			<li><a href="profile.html">Profile Settings</a></li>
+			<li><a href="contactForm.html">Support</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Contact Us</h1>
+        <p>For any inquiries, reach out to us through the contact form or live chat below.</p>
+    </header>
+	
+	<!-- Third Party Live Chat Feature Different Option avalible Upon Upgrade for Best Version loaded with Features -->
+		<iframe src="https://www3.cbox.ws/box/?boxid=3541220&boxtag=ivm4IR" width="100%" height="450" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>
+
+
+    <!-- Residential Rentals Contact Information Section -->
+    <section id="organization-info">
+        <h2>Our Contact Information</h2>
+        <ul>
+            <li><strong>Address:</strong> 1234 Residential Street, Rent City, Country</li>
+            <li><strong>Phone:</strong> +123 456 7890</li>
+            <li><strong>Email:</strong> support@residentialrentals.com</li>
+            <li><strong>Office Hours:</strong> Mon-Fri, 9 AM - 6 PM</li>
+        </ul>
+    </section>
+	
+	
+
+    <!-- Contact Form Section -->
+    <section id="contact-form-section">
+        <h2>Send Us a Message</h2>
+        <form method="post" action="mailto:support@residentialrentals.com">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required placeholder="Your Name">
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="Your Email Address">
+
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="Subject">
+
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required placeholder="Your message"></textarea>
+
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+
+    <!-- Live Chat Section for Support -- >
+    <section id="live-chat-section">
+        <h2>Live Chat Support</h2>
+        <div id="chat-container">
+            <div id="chat-box">
+                <!-- Real-time chat messages will be displayed here -- >
+            </div>
+            <input type="text" id="message-input" placeholder="Type your message here..." />
+            <button id="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+    </section>
+	<!-- -->
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Residential Rentals. All Rights Reserved.</p>
+    </footer>
+	
+	<!-- Firebase SDK for Live Chat Under work if needed -- >
+	
+    <script type="module">
+      // Import Firebase SDK
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+      import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-database.js";
+
+      // Firebase configuration for your web app
+      const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_AUTH_DOMAIN",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_STORAGE_BUCKET",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId: "YOUR_APP_ID",
+        measurementId: "YOUR_MEASUREMENT_ID",
+        databaseURL: "YOUR_DATABASE_URL"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+
+      // Send a new message to Firebase Database
+      function sendMessage() {
+        const messageInput = document.getElementById('message-input').value;
+        const user = "Support";  // Hardcoding "Support" for the contact page chat
+        if (messageInput.trim() !== "") {
+          const messageRef = ref(db, 'messages');
+          push(messageRef, {
+            user: user,
+            message: messageInput,
+            timestamp: new Date().toLocaleString()
+          });
+          document.getElementById('message-input').value = ''; // Clear input after sending
+        }
+      }
+
+      // Load new messages from Firebase in real-time
+      function loadMessages() {
+        const chatBox = document.getElementById('chat-box');
+        const messageRef = ref(db, 'messages');
+        onChildAdded(messageRef, (snapshot) => {
+          const data = snapshot.val();
+          const newMessage = `<p><strong>${data.user}:</strong> ${data.message} <em>${data.timestamp}</em></p>`;
+          chatBox.innerHTML += newMessage;
+          chatBox.scrollTop = chatBox.scrollHeight;
+        });
+      }
+
+      window.onload = loadMessages;
+	  
+    </script>
+	
+	<script>
+		window['CboxReady'] = function (Cbox) {
+			Cbox('button', '3-3541220-ivm4IR');
+		}
+	</script>
+	
+	<script src="https://static.cbox.ws/embed/2.js" async></script>
+	
+	<!-- End of Trials -->
+	
 </body>
 </html>
