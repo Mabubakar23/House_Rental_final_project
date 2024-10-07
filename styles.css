@@ -1,98 +1,375 @@
+/* Base Styles Color Scheme of Webiste */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #2C2C2C; /* Dark grey background */
+    color: #FFFFFF; /* White text for readability */
+    padding: 20px;
+    line-height: 1.6; /* Spacing between text */
 }
 
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 1em;
+/* Headings (H1, H2) */
+h1, h2 {
+    color: #FFFFFF; /* White headings for contrast */
+    margin-bottom: 15px; /* Space below the headings */
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 2.2em;
+    border-bottom: 3px solid #556B2F; /* Olive green underline for H1 */
+    padding-bottom: 10px;
+}
+
+h2 {
+    font-size: 1.8em;
+    border-bottom: 2px solid #556B2F; /* Olive green underline for H2 */
+    padding-bottom: 8px;
+}
+
+
+/* Navigation Bar */
+nav {
+    background-color: #556B2F; /* Olive green color for navigation bar */
+    padding: 10px;
     text-align: center;
 }
 
-header nav ul {
-    list-style: none;
+nav ul {
+    list-style-type: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: space-between;
 }
 
-header nav ul li {
-    margin-right: 20px;
+nav ul li {
+    display: inline;
+    margin-right: 15px;
 }
 
-header nav a {
-    color: #fff;
+nav ul li a {
+    color: white; /* White text in nav links */
     text-decoration: none;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
-.hero {
-    background-image: url('https://via.placeholder.com/1920x1080');
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
+nav ul li a:hover {
+    background-color: #3C3C3C; /* Dark grey hover effect */
+    color: #FFFFFF;
 }
 
-.hero h1 {
-    font-size: 48px;
-}
 
-.features {
-    padding: 2em;
+/* Section Styling */
+section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #3C3C3C; /* Slightly lighter grey background for sections */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Add depth to sections */
 }
-
-.features ul {
-    list-style: none;
+section.features ul {
     margin: 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.features li {
-    margin: 20px;
-    width: calc(33.33% - 20px);
-}
-
-.features img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-.features h3 {
-    font-size: 18px;
-    margin-top: 10px;
-}
-
-.call-to-action {
-    background-color: #333;
-    color: #fff;
-    padding: 2em;
     text-align: center;
 }
+section.features ul li {
+    display: inline;
+}
+section.features ul li div.icon {
+    display: inline-block;
+    margin: 5px;
+    width: 400px;
+}
+section.features ul li div.icon img {
+    height: 300px;
+    width: 400px;
+}
+section.features ul li div.icon p {
+    font-size: 12px;
+}
 
-.call-to-action button {
-    background-color: #fff;
-    color: #333;
-    border: none;
+/* Links (General) */
+a {
+    color: #C0C0C0; /* Silver text for links */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+a:hover {
+    color: #FFFFFF; /* White text on hover */
+    background-color: #556B2F; /* Olive green hover effect */
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+/* Buttons */
+button {
+    background-color: #556B2F; /* Olive green button background */
+    color: #FFFFFF; /* White text for contrast */
     padding: 10px 20px;
-    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #3C3C3C; /* Dark grey hover effect */
+}
+
+/* Forms */
+form {
+    background-color: #3C3C3C;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
+}
+
+form label {
+    color: #FFFFFF;
+    display: block;
+    margin-bottom: 8px;
+}
+
+form input, form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #C0C0C0;
+    border-radius: 5px;
+    background-color: #2C2C2C;
+    color: #FFFFFF;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    background-color: #3C3C3C; /* Same dark grey background */
+    color: #FFFFFF; /* White text */
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #556B2F; /* Olive green border for table */
+}
+
+th {
+    background-color: #556B2F; /* Olive green header */
+}
+
+td {
+    background-color: #2C2C2C; /* Dark grey cells */
+}
+
+/* Chat Box used in dashboard also in contact page possibly */
+#chat-container {
+    background-color: #3C3C3C; /* Dark grey background for the chat container */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
+}
+
+#chat-box {
+    height: 300px;
+    overflow-y: auto;
+    background-color: #2C2C2C; /* Darker grey background */
+    border: 1px solid #556B2F; /* Olive green border for the chat box */
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+#message-input {
+    width: 80%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #C0C0C0;
+    background-color: #2C2C2C;
+    color: #FFFFFF;
+    margin-right: 10px;
+}
+
+#send-btn {
+    background-color: #556B2F;
+    color: #FFFFFF;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
     cursor: pointer;
 }
 
-footer {
-    background-color: #333;
-    color: #fff;
-    padding: 1em;
-    text-align: center;
-    clear: both;
+#send-btn:hover {
+    background-color: #3C3C3C;
 }
+
+/* Image Containers */
+.image-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.image-container img {
+    width: 250px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    border: 2px solid #556B2F; /* Olive green border */
+}
+
+/* Footer Styling */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 15px;
+    background-color: #1C1C1C; /* Even darker grey for footer */
+    color: white; /* White text for footer */
+    font-size: 0.9em;
+    border-top: 4px solid #556B2F; /* Olive green border on top */
+}
+
+/* Responsive Design of Webiste */
+@media (max-width: 600px) {
+    body {
+        font-size: 90%;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    h2 {
+        font-size: 1.2em;
+    }
+
+    .image-container img {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    form input, form textarea {
+        font-size: 0.9em;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#chat-container {
+    background-color: #3C3C3C; /* Dark grey background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
+}
+
+#chat-box {
+    height: 300px;
+    overflow-y: auto; /* Enable scrolling */
+    background-color: #2C2C2C; /* Darker background */
+    border: 1px solid #556B2F; /* Olive green border */
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+#message-input {
+    width: 80%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #C0C0C0;
+    background-color: #2C2C2C;
+    color: #FFFFFF;
+    margin-right: 10px;
+}
+
+#send-btn {
+    padding: 10px 20px;
+    background-color: #556B2F;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#send-btn:hover {
+    background-color: #3C3C3C;
+}
+
+
+/* Possible Live Chat Box styling
+
+
+#chat-container {
+    background-color: #3C3C3C;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
+}
+
+#chat-box {
+    height: 300px;
+    overflow-y: auto;
+    background-color: #2C2C2C;
+    border: 1px solid #556B2F;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+#message-input {
+    width: 80%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #C0C0C0;
+    background-color: #2C2C2C;
+    color: #FFFFFF;
+    margin-right: 10px;
+}
+
+#send-btn {
+    background-color: #556B2F;
+    color: #FFFFFF;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+#send-btn:hover {
+    background-color: #3C3C3C;
+}
+
+
+End */
