@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentals</title>
+    <link rel="stylesheet" href="styles.css"> 
+    
+    <!-- Firebase SDK and Scripts under work if Needed -- >
+	
+    <script type="module">
+      // Firebase SDK and live chat initialization
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+      import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_AUTH_DOMAIN",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_STORAGE_BUCKET",
+        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+        appId: "YOUR_APP_ID",
+        databaseURL: "YOUR_DATABASE_URL"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+
+      function sendMessage() {
+        const messageInput = document.getElementById('message-input').value;
+        const user = "User";  // Hardcoding the user
+        if (messageInput.trim() !== "") {
+          const messageRef = ref(db, 'messages');
+          push(messageRef, {
+            user: user,
+            message: messageInput,
+            timestamp: new Date().toLocaleString()
+          });
+          document.getElementById('message-input').value = ''; // Clear input after sending
+        }
+      }
+
+      function loadMessages() {
+        const chatBox = document.getElementById('chat-box');
+        const messageRef = ref(db, 'messages');
+        onChildAdded(messageRef, (snapshot) => {
+          const data = snapshot.val();
+          const newMessage = `<p><strong>${data.user}:</strong> ${data.message} <em>${data.timestamp}</em></p>`;
+          chatBox.innerHTML += newMessage;
+          chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the latest message
+        });
+      }
+
+      window.onload = loadMessages;
+    </script>
+	
+	<!-- End of trials -->
+	
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="login.html">Login/Signup</a></li>
+			<li><a href="dashboard.html">Rental Portal</a></li>
+			<li><a href="profile.html">Profile Settings</a></li>
+			<li><a href="supportPage.html">Support</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header Section -->
+
+    <header>
+        <h1>Welcome to Residential Hospatilty Rentals</h1>
+        <p>Your platform for negotiable terms and prices for residential properties in real-time for the succes of owners and Customers.</p>
+    </header>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2>About Our Platform</h2>
+        <p>Residential Rentals is a unique platform designed to facilitate live negotiations between property owners and renters. Whether you're looking to rent your property or find a rental, our platform provides the tools for real-time communication and flexible pricing.</p>
+    </section>
+
+    <!-- Login/Signup Section -- >
+    <section id="auth-section">
+        <input type="email" placeholder="Email" />
+        <input type="password" placeholder="Password" />
+        <button>Login</button>
+        <button>Signup</button>
+    </section>
+	    <!-- Login/Signup Section -- >
+
+
+    <!-- Live Chat Section -->
+    <section id="live-chat-section">
+        <h2>Live Negotiation Chat</h2>
+        <div id="chat-container">
+            <div id="chat-box">
+                <!-- Messages from Firebase will appear here -->
+            </div>
+            <input type="text" id="message-input" placeholder="Type your message here..." />
+            <button id="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+    </section>
+	
+	<!-- Images Section - pre-configured Image container styling for added Media  -->
+	
+    <section id="images">
+        <div class="image-container">
+            <img src="images/liveChat.jpg" alt="Image of Innovative Live Negotitation Chat">
+            <img src="images/rentals.jpg" alt="Image of Rental Platform">
+        </div>
+    </section>
+	
+	
+
+    <!-- Buttons Section for User to Explore Webiste -->
+    <section id="cta-buttons">
+        <h2>Explore Our Features</h2>
+        <div class="cta-buttons">
+            <a href="contactForm.html" class="cta-button">Contact Us</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Residential Rentals. All Rights Reserved.</p>
+    </footer>
+	
+	<!-- FireBase services and implementation of Live Chat connected with FireBase Configured Database Services Config under work -- >
+	
+	<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-database.js";
+
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "BM5s7_yU132TNQloapNk0o54e7Wa3hlIYQwfgdIuU_rkctqlqGvsCgcWE_c1NNWHoEeERE2YYbdiEPIKgVW_fwY",
+    authDomain: "",
+    projectId: "residential-rental-hospitality",
+    storageBucket: "",
+    messagingSenderId: "716299420732",
+    appId: "1:716299420732:web:2fb4e70235178bb0922f39",
+    databaseURL: ""
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // Send a new message to Firebase Database
+  function sendMessage() {
+    const messageInput = document.getElementById('message-input').value;
+    const user = "User";  // You can replace this with dynamic usernames
+    if (messageInput.trim() !== "") {
+      const messageRef = ref(db, 'messages');
+      push(messageRef, {
+        user: user,
+        message: messageInput,
+        timestamp: new Date().toLocaleString()
+      });
+      document.getElementById('message-input').value = ''; // Clear input after sending
+    }
+  }
+
+  // Load new messages from Firebase in real time
+  function loadMessages() {
+    const chatBox = document.getElementById('chat-box');
+    const messageRef = ref(db, 'messages');
+    
+    onChildAdded(messageRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log('New message received:', data);  // Debugging line
+
+      // Create a new paragraph for the message
+      const newMessage = document.createElement('p');
+      newMessage.innerHTML = `<strong>${data.user}:</strong> ${data.message} <em>${data.timestamp}</em>`;
+      
+      chatBox.appendChild(newMessage);
+      
+      chatBox.scrollTop = chatBox.scrollHeight;
+    });
+  }
+  window.onload = loadMessages;
+</script>
+
+<!-- End -->
+   
+</body>
+</html>
