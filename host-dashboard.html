@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>List a Property</h2>
+    <form id="property-form">
+        <label for="title">Title</label>
+        <input type="text" id="title" placeholder="Property title" required>
+
+        <label for="description">Description</label>
+        <textarea id="description" placeholder="Property description" required></textarea>
+
+        <label for="price">Price per night</label>
+        <input type="number" id="price" placeholder="Price" required>
+
+        <label for="location">Location</label>
+        <input type="text" id="location" placeholder="Location" required>
+
+        <label for="rooms">Number of Rooms</label>
+        <input type="number" id="rooms" placeholder="Rooms" required>
+
+        <label for="bathrooms">Number of Bathrooms</label>
+        <input type="number" id="bathrooms" placeholder="Bathrooms" required>
+
+        <button type="submit">Submit Property</button>
+    </form>
+
+    <!-- Firebase and Custom Script -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+
+    <script type="module">
+        import { addPropertyListing } from './js/app.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const propertyForm = document.getElementById('property-form');
+            if (propertyForm) {
+                propertyForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const title = document.getElementById('title').value;
+                    const description = document.getElementById('description').value;
+                    const price = parseFloat(document.getElementById('price').value);
+                    const location = document.getElementById('location').value;
+                    const rooms = parseInt(document.getElementById('rooms').value, 10);
+                    const bathrooms = parseInt(document.getElementById('bathrooms').value, 10);
+
+                    try {
+                        await addPropertyListing(title, description, price, location, rooms, bathrooms);
+                        alert('Property listed successfully');
+                        propertyForm.reset();
+                    } catch (error) {
+                        alert('Error adding property: ' + error.message);
+                    }
+                });
+            } else {
+                console.error("Form with ID 'property-form' not found.");
+            }
+        });
+    </script>
+</body>
+</html>
