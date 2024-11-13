@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name=" viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentals</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/script.js" defer></script>
 </head>
 <body>
     <header>
@@ -20,10 +21,16 @@
     </header>
     <main>
         <section class="hero">
-            <h1>Find your dream home</h1>
-            <p>Most rental websites, like those for short-term and long-term house leases, have set prices that can't be changed. Many people who want to rent may not be able to because of the rigid pricing system. This is especially true for people from low-income families or people who need a place to live quickly. In the same way, property owners may miss out on rental possibilities because they can't change their prices instantly based on demand and what renters want. The project's goal is to make a website that lets people renting homes negotiate prices on the fly. We want to make renting easier for people who are limited by money by adding a real-time negotiation tool. This will let them get properties that they might not be able to get otherwise. This feature will also help property owners because it will make it more likely that their homes will be rented quickly and easily, meeting last-minute needs, and getting the most usage. </p>
-            <button>Search</button>
+            <h1 style="text-align:center; border:0px; fon">Find your dream home</h1>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search listings...">
+                <span id="clear-button" onclick="clearSearch()">&#10005;</span>
+                <button id="search-button" onclick="performSearch()">
+                    <img src="img/search-icon.png" alt="Search">
+                </button>
+            </div>
         </section>
+        
         <section class="features">
             <h2>What makes us special</h2>
             <ul>
@@ -31,28 +38,38 @@
                     <div class="icon">
                         <img src="img/unique-home.jpg" alt="Unique homes">
                         <h3>Unique homes</h3>
-                        <p>From cozy apartments to spacious villas</p>
+                        <p>Discover a world of unique living spaces, tailored to suit every lifestyle. Whether you're looking for the charm of a cozy apartment or the luxury of a spacious villa, our rentals offer distinct options that make you feel right at home. From urban hideaways to serene countryside escapes, find a place that’s as unique as you are.</p>
                     </div>
                 </li>
                 <li>
                     <div class="icon">
                         <img src="img/local_culture.jpg" alt="Local experiences">
                         <h3>Local experiences</h3>
-                        <p>Immerse yourself in the local culture</p>
+                        <p>Dive deep into the heart of each destination with experiences that go beyond typical sightseeing. Our rentals connect you to vibrant local communities, allowing you to explore authentic traditions, savor regional flavors, and feel the true spirit of the place. Immerse yourself in the local culture and make memories that capture the essence of each unique location.</p>
                     </div>
                 </li>
                 <li>
                     <div class="icon">
                         <img src="img/options.jpg" alt="options">
                         <h3>Options</h3>
-                        <p>Bring your friends along</p>
+                        <p>Whether it’s a getaway with friends, a family gathering, or a group adventure, our flexible rental options make it easy to bring everyone along. Choose from a variety of accommodations designed to cater to groups of all sizes, ensuring everyone has a comfortable and memorable stay. Make shared memories in spaces that bring people together.</p>
                     </div>
                 </li>
             </ul>
         </section>
+ 
         <section class="call-to-action">
             <h2>Ready to start your journey?</h2>
-            <button>Sign up</button>
+            <div class="help-buttons">
+                <button class="help-button active">Renting</button>
+                <button class="help-button">Hosting</button>
+                <button class="help-button">Sign up</button>
+            </div>            
+        </section>
+        
+        <section class="about_us">
+            <h2>About us</h2>
+            <p>Most rental websites, like those for short-term and long-term house leases, have set prices that can't be changed. Many people who want to rent may not be able to because of the rigid pricing system. This is especially true for people from low-income families or people who need a place to live quickly. In the same way, property owners may miss out on rental possibilities because they can't change their prices instantly based on demand and what renters want. The project's goal is to make a website that lets people renting homes negotiate prices on the fly. We want to make renting easier for people who are limited by money by adding a real-time negotiation tool. This will let them get properties that they might not be able to get otherwise. This feature will also help property owners because it will make it more likely that their homes will be rented quickly and easily, meeting last-minute needs, and getting the most usage. </p>
         </section>
     </main>
     <!-- Footer Section -->

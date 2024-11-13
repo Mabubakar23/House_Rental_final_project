@@ -13,6 +13,12 @@ body {
     line-height: 1.6; /* Spacing between text */
 }
 
+.hero {
+    background-image: url('../img/home_banner_1.jpg');  /* Background image for the hero section */
+    background-size: cover;
+    background-position: center;
+}
+
 /* Headings (H1, H2) */
 h1, h2 {
     color: #FFFFFF; /* White headings for contrast */
@@ -267,24 +273,6 @@ footer {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #chat-container {
     background-color: #3C3C3C; /* Dark grey background */
     padding: 20px;
@@ -326,6 +314,81 @@ footer {
     background-color: #3C3C3C;
 }
 
+
+
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    width: 60%;
+    margin: 20px auto;
+    background-color: #FFFFFF;
+    border-radius: 25px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#search-input {
+    width: 100%;
+    padding: 10px 40px 10px 20px; /* Add padding for icon spacing */
+    border: none;
+    border-radius: 25px;
+    font-size: 20px;
+    color: #333;
+    outline: none;
+}
+
+#clear-button {
+    position: absolute;
+    right: 60px;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+    display: none; /* Hidden until input has text */
+}
+
+#search-button {
+    position: absolute;
+    right: 10px;
+    background-color: #222222;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+}
+
+#search-button img {
+    width: 16px; /* Adjust icon size */
+    height: 16px;
+}
+
+.help-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.help-button {
+    padding: 10px 20px;
+    border: 2px solid #555050;
+    border-radius: 20px;
+    font-size: 1em;
+    background-color: transparent;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.help-button:hover {
+    background-color: #797070;
+    color: #d8c3c3;
+}
 
 /* Possible Live Chat Box styling
 
