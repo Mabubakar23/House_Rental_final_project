@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Portal</title>
+    <link rel="stylesheet" href="css/user-portal-styles.css"> <!-- Make sure the path is correct -->
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="html/signin.html">Sign In</a></li>
+            <li><a href="html/signup.html">Sign Up</a></li>
+            <li><a href="html/profile.html">Profile</a></li>
+            <li><a href="html/support.html">Support</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <h2>Available Properties</h2>
+        <div id="property-list">
+            <!-- Property Cards Will Be Populated Dynamically -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Residential Rentals. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Firebase and Custom Script -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+    <script type="module">
+        // Dynamic Property Fetching Logic
+        import { fetchProperties } from './js/app.js'; // Update path as needed
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const propertyList = document.getElementById('property-list');
+
+            if (!propertyList) {
+                console.error("Element with ID 'property-list' not found.");
+                return;
+            }
+
+            try {
+                const properties = await fetchProperties();
+                propertyList.innerHTML = ""; // Clear previous content
+
+                properties.forEach((property) => {
+                    const propertyItem = document.createElement("div");
+                    propertyItem.classList.add("property-item");
+                    propertyItem.innerHTML = `
+                        <h3>${property.title}</h3>
+                        <p>${property.description}</p>
+                        <p><strong>Price:</strong> $${property.price} per night</p>
+                        <p><strong>Location:</strong> ${property.location}</p>
+                        <p><strong>Rooms:</strong> ${property.rooms}</p>
+                        <p><strong>Bathrooms:</strong> ${property.bathrooms}</p>
+                        <button class="negotiation-btn">Start Negotiation</button>
+                    `;
+                    propertyList.appendChild(propertyItem);
+                });
+            } catch (error) {
+                console.error("Error fetching properties:", error.message);
+            }
+        });
+    </script>
+</body>
+</html>
