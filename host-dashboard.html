@@ -9,6 +9,7 @@
 <body>
     <h2>List a Property</h2>
     <form id="property-form">
+        <!-- Existing Form Fields -->
         <label for="title">Title</label>
         <input type="text" id="title" placeholder="Property title" required>
 
@@ -27,29 +28,47 @@
         <label for="bathrooms">Number of Bathrooms</label>
         <input type="number" id="bathrooms" placeholder="Bathrooms" required>
 
-        <!-- Multiple File Upload for House Pictures -->
+        <!-- Multiple File Upload -->
         <label for="house-pictures">Attach House Pictures</label>
         <input type="file" id="house-pictures" multiple accept="image/*">
-
 
         <button type="submit">Submit Property</button>
     </form>
 
-    <!-- Firebase and Custom Script -->
+    <h3>Submitted Property</h3>
+    <div id="submitted-property" style="display: none;">
+        <p><strong>Title:</strong> <span id="property-title"></span></p>
+        <p><strong>Description:</strong> <span id="property-description"></span></p>
+        <p><strong>Price:</strong> $<span id="property-price"></span> per night</p>
+        <p><strong>Location:</strong> <span id="property-location"></span></p>
+        <p><strong>Rooms:</strong> <span id="property-rooms"></span></p>
+        <p><strong>Bathrooms:</strong> <span id="property-bathrooms"></span></p>
+        <h4>Uploaded Pictures</h4>
+        <div id="property-pictures"></div>
+    </div>
+
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
-
     <script type="module">
         import { addPropertyListing, uploadHousePictures } from './js/app.js';
 
         document.addEventListener('DOMContentLoaded', () => {
             const propertyForm = document.getElementById('property-form');
             const housePicturesInput = document.getElementById('house-pictures');
+            const submittedPropertySection = document.getElementById('submitted-property');
+            const propertyTitle = document.getElementById('property-title');
+            const propertyDescription = document.getElementById('property-description');
+            const propertyPrice = document.getElementById('property-price');
+            const propertyLocation = document.getElementById('property-location');
+            const propertyRooms = document.getElementById('property-rooms');
+            const propertyBathrooms = document.getElementById('property-bathrooms');
+            const propertyPictures = document.getElementById('property-pictures');
 
             if (propertyForm) {
                 propertyForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
+
                     const title = document.getElementById('title').value;
                     const description = document.getElementById('description').value;
                     const price = parseFloat(document.getElementById('price').value);
@@ -57,7 +76,6 @@
                     const rooms = parseInt(document.getElementById('rooms').value, 10);
                     const bathrooms = parseInt(document.getElementById('bathrooms').value, 10);
 
-                    // Handle file uploads
                     const files = housePicturesInput.files;
                     let pictureLinks = [];
                     if (files.length > 0) {
@@ -68,18 +86,36 @@
                             return;
                         }
                     }
-                    
-                    // Submit the property listing with picture links
+
                     try {
                         await addPropertyListing(title, description, price, location, rooms, bathrooms, pictureLinks);
-                        alert('Property listed successfully');
+
+                        // Display submitted property details
+                        propertyTitle.textContent = title;
+                        propertyDescription.textContent = description;
+                        propertyPrice.textContent = price;
+                        propertyLocation.textContent = location;
+                        propertyRooms.textContent = rooms;
+                        propertyBathrooms.textContent = bathrooms;
+
+                        // Display uploaded pictures
+                        propertyPictures.innerHTML = '';
+                        pictureLinks.forEach((link) => {
+                            const img = document.createElement('img');
+                            img.src = link;
+                            img.alt = 'Uploaded Picture';
+                            img.style.width = '150px';
+                            img.style.margin = '5px';
+                            propertyPictures.appendChild(img);
+                        });
+
+                        submittedPropertySection.style.display = 'block';
                         propertyForm.reset();
+                        alert('Property listed successfully');
                     } catch (error) {
                         alert('Error adding property: ' + error.message);
                     }
                 });
-            } else {
-                console.error("Form with ID 'property-form' not found.");
             }
         });
     </script>
