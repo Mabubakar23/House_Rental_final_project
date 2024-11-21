@@ -1,7 +1,21 @@
-// Import Firebase SDK (only needed if using ES6 modules, otherwise include in HTML directly)
+// Import Firebase SDK
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, setDoc, doc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"; // Added getDocs
+import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    signOut, 
+    onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { 
+    getFirestore, 
+    collection, 
+    addDoc, 
+    setDoc, 
+    doc, 
+    getDoc, 
+    getDocs 
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -14,56 +28,78 @@ const firebaseConfig = {
     measurementId: "G-54J13NNWH7"
 };
 
-// Initialize Firebase and Firestore
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Sign-Up Function (with Role)
-export function signUp(email, password, role) {
-    return createUserWithEmailAndPassword(auth, email, password)
-        .then(async (userCredential) => {
-            const user = userCredential.user;
+/* =======================
+   Authentication Functions
+   ======================= */
 
-            // Save user role in Firestore
-            await setDoc(doc(db, "users", user.uid), {
-                email: email,
-                role: role
-            });
+// Sign-Up Function
+export async function signUp(email, password, role) {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
-            alert('Account created successfully');
-            window.location.href = '../html/signin.html'; // Redirect to sign-in page
-        })
-        .catch((error) => {
-            alert('Error: ' + error.message);
+        // Save user role in Firestore
+        await setDoc(doc(db, "users", user.uid), {
+            email: email,
+            role: role
         });
+
+        alert('Account created successfully!');
+        window.location.href = '../html/signin.html'; // Redirect to sign-in page
+    } catch (error) {
+        alert('Sign-up error: ' + error.message);
+    }
 }
 
-// Sign-In Function (with Role Check and Redirection)
-export function signIn(email, password) {
-    return signInWithEmailAndPassword(auth, email, password)
-        .then(async (userCredential) => {
-            const user = userCredential.user;
+// Sign-In Function
+export async function signIn(email, password) {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
-            // Fetch user role from Firestore
-            const userDoc = await getDoc(doc(db, "users", user.uid));
-            if (userDoc.exists()) {
-                const userData = userDoc.data();
-                if (userData.role === "owner") {
-                    window.location.href = '../html/owner-portal.html'; // Redirect to owner portal
-                } else {
-                    window.location.href = '../html/user-portal.html'; // Redirect to user portal
-                }
+        // Fetch user role from Firestore
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+
+            // Redirect based on role
+            if (userData.role === "owner") {
+                window.location.href = '../html/owner-portal.html';
+            } else if (userData.role === "user") {
+                window.location.href = '../html/user-portal.html';
             } else {
-                console.error("No user role found!");
+                alert("Unknown role. Please contact support.");
             }
+        } else {
+            alert("No user data found. Please contact support.");
+        }
+    } catch (error) {
+        alert('Sign-in error: ' + error.message);
+    }
+}
+
+// Log-Out Function
+export function logOut() {
+    signOut(auth)
+        .then(() => {
+            alert("Logged out successfully!");
+            window.location.href = "../index.html"; // Redirect to home page
         })
         .catch((error) => {
-            alert('Error: ' + error.message);
+            alert("Error logging out: " + error.message);
         });
 }
 
-// Function to add a property listing (for owners)
+/* =======================
+   Firestore Functions
+   ======================= */
+
+// Add Property Listing (For Owners)
 export async function addPropertyListing(title, description, price, location, rooms, bathrooms) {
     try {
         await addDoc(collection(db, "properties"), {
@@ -75,17 +111,52 @@ export async function addPropertyListing(title, description, price, location, ro
             bathrooms,
             timestamp: new Date()
         });
+
+        alert("Property listing added successfully!");
     } catch (error) {
-        throw new Error("Failed to add property listing: " + error.message);
+        alert("Error adding property listing: " + error.message);
     }
 }
 
-// Function to retrieve property listings (for users)
+// Fetch Property Listings (For Users)
 export async function fetchProperties() {
-    const querySnapshot = await getDocs(collection(db, "properties"));
-    const properties = [];
-    querySnapshot.forEach((doc) => {
-        properties.push({ id: doc.id, ...doc.data() });
-    });
-    return properties;
+    try {
+        const querySnapshot = await getDocs(collection(db, "properties"));
+        const properties = [];
+        querySnapshot.forEach((doc) => {
+            properties.push({ id: doc.id, ...doc.data() });
+        });
+        return properties;
+    } catch (error) {
+        alert("Error fetching properties: " + error.message);
+        return [];
+    }
 }
+
+// Add Support Message
+export async function addSupportMessage(name, email, subject, message) {
+    try {
+        await addDoc(collection(db, "support"), {
+            name,
+            email,
+            subject,
+            message,
+            timestamp: new Date()
+        });
+
+        alert("Support message sent successfully!");
+    } catch (error) {
+        alert("Error sending support message: " + error.message);
+    }
+}
+
+/* =======================
+   Auth State Listener
+   ======================= */
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        console.log("User is signed in: ", user.email);
+    } else {
+        console.log("No user is signed in.");
+    }
+});

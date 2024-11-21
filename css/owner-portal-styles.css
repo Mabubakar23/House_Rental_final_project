@@ -1,4 +1,4 @@
-/* Global Styles */
+/* Global Styles Specific to Owner Portal */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -8,7 +8,7 @@ body {
     background-color: #f9f9f9;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3 {
     margin: 0;
     font-family: 'Georgia', serif;
     color: #2c3e50;
@@ -19,13 +19,7 @@ a {
     color: #3498db;
 }
 
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-/* Header Styles */
+/* Header Styling */
 header {
     background: #34495e;
     color: white;
@@ -60,25 +54,49 @@ header nav ul li a.active {
     border-radius: 5px;
 }
 
-/* Hero Section */
-.hero {
+/* Form Styling for Adding Properties */
+.property-form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.property-form h2 {
     text-align: center;
-    padding: 4rem 2rem;
-    background: #ecf0f1;
+    margin-bottom: 1.5rem;
     color: #2c3e50;
 }
 
-.hero h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+.property-form .form-group {
+    margin-bottom: 1.5rem;
 }
 
-.hero p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
+.property-form .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
 }
 
-.hero .btn-primary {
+.property-form .form-group input,
+.property-form .form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.property-form .form-group textarea {
+    resize: vertical;
+}
+
+.property-form button {
+    width: 100%;
     background-color: #3498db;
     color: white;
     padding: 0.75rem 1.5rem;
@@ -89,55 +107,79 @@ header nav ul li a.active {
     transition: background-color 0.3s ease-in-out;
 }
 
-.hero .btn-primary:hover {
+.property-form button:hover {
     background-color: #2980b9;
 }
 
-/* Features Section */
-.features {
-    padding: 2rem;
-    background: #ffffff;
-    text-align: center;
-}
-
-.features h2 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-}
-
-.features-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+/* Property Listings */
+.property-listings {
+    max-width: 1200px;
+    margin: 2rem auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
 }
 
-.features-list li {
-    flex: 1 1 300px;
-    max-width: 300px;
-    padding: 1rem;
+.property-card {
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-.features-list li:hover {
+.property-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.features-list li img {
+.property-card img {
     width: 100%;
-    border-radius: 5px;
-    margin-bottom: 1rem;
+    height: 200px;
+    object-fit: cover;
 }
 
-.features-list li h3 {
-    margin: 0.5rem 0;
+.property-card .details {
+    padding: 1rem;
+    text-align: left;
+}
+
+.property-card h3 {
+    margin: 0 0 0.5rem 0;
     font-size: 1.5rem;
     color: #2c3e50;
+}
+
+.property-card p {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+    color: #555;
+}
+
+.property-card .price {
+    font-weight: bold;
+    color: #27ae60;
+    margin-top: 1rem;
+}
+
+.property-card button {
+    background-color: #3498db;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease-in-out;
+    margin-top: 1rem;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.property-card button:hover {
+    background-color: #2980b9;
 }
 
 /* Call-to-Action Section */
@@ -146,6 +188,7 @@ header nav ul li a.active {
     text-align: center;
     background-color: #34495e;
     color: white;
+    margin-top: 2rem;
 }
 
 .call-to-action h2 {
@@ -168,56 +211,6 @@ header nav ul li a.active {
     background-color: #2980b9;
 }
 
-/* Form Styles */
-.form {
-    max-width: 500px;
-    margin: 2rem auto;
-    padding: 2rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-    box-sizing: border-box;
-}
-
-.form-group textarea {
-    resize: vertical;
-}
-
-.btn-primary {
-    background-color: #3498db;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-}
-
-.btn-primary:hover {
-    background-color: #2980b9;
-}
-
 /* Footer */
 footer {
     text-align: center;
@@ -233,7 +226,7 @@ footer {
         flex-direction: column;
     }
 
-    .features-list {
-        flex-direction: column;
+    .property-listings {
+        grid-template-columns: 1fr;
     }
 }
