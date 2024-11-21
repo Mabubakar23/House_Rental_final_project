@@ -32,7 +32,7 @@ export function signUp(email, password, role) {
             });
 
             alert('Account created successfully');
-            window.location.href = 'html/signin.html'; // Redirect to sign-in page
+            window.location.href = '../html/signin.html'; // Redirect to sign-in page
         })
         .catch((error) => {
             alert('Error: ' + error.message);
@@ -50,9 +50,9 @@ export function signIn(email, password) {
             if (userDoc.exists()) {
                 const userData = userDoc.data();
                 if (userData.role === "owner") {
-                    window.location.href = 'html/owner-portal.html'; // Redirect to owner portal
+                    window.location.href = '../html/owner-portal.html'; // Redirect to owner portal
                 } else {
-                    window.location.href = 'html/user-portal.html'; // Redirect to user portal
+                    window.location.href = '../html/user-portal.html'; // Redirect to user portal
                 }
             } else {
                 console.error("No user role found!");
