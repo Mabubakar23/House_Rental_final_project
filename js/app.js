@@ -32,7 +32,7 @@ export function signUp(email, password, role) {
             });
 
             alert('Account created successfully');
-            window.location.href = 'signin.html'; // Redirect to sign-in page
+            window.location.href = 'html/signin.html'; // Redirect to sign-in page
         })
         .catch((error) => {
             alert('Error: ' + error.message);
