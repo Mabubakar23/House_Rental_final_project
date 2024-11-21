@@ -67,38 +67,57 @@ export function signIn(email, password) {
 
 // Upload multiple house pictures
 export async function uploadHousePictures(files) {
-    const storage = getStorage();
-    const folderPath = 'house_picture/';
-    let uploadPromises = [];
+    try {
+        const storage = getStorage(); // Initialize Firebase Storage
+        const folderPath = 'house_picture/';
+        let uploadPromises = [];
 
-    for (let file of files) {
-        const fileRef = ref(storage, `${folderPath}${file.name}`);
-        const uploadTask = uploadBytes(fileRef, file).then(async (snapshot) => {
-            const downloadURL = await getDownloadURL(snapshot.ref);
-            return downloadURL;
-        });
-        uploadPromises.push(uploadTask);
+        for (let file of files) {
+            // Generate a unique file name using timestamp
+            const uniqueFileName = `${Date.now()}-${file.name}`;
+            const fileRef = ref(storage, `${folderPath}${uniqueFileName}`);
+
+            // Upload the file and get the download URL
+            const uploadTask = uploadBytes(fileRef, file).then(async (snapshot) => {
+                const downloadURL = await getDownloadURL(snapshot.ref);
+                console.log(`Uploaded file: ${file.name}, URL: ${downloadURL}`);
+                return downloadURL;
+            });
+
+            uploadPromises.push(uploadTask);
+        }
+
+        // Wait for all uploads to complete
+        return await Promise.all(uploadPromises);
+    } catch (error) {
+        console.error("Error uploading house pictures:", error);
+        throw new Error("Failed to upload house pictures. Please try again.");
     }
-
-    return Promise.all(uploadPromises);
 }
 
 
 // Function to add a property listing (for hosts), including picture links
 export async function addPropertyListing(title, description, price, location, rooms, bathrooms, pictureLinks = []) {
-    const db = getFirestore();
-    const propertyData = {
-        title,
-        description,
-        price,
-        location,
-        rooms,
-        bathrooms,
-        pictures: pictureLinks, // Store picture links in the database
-        createdAt: new Date(),
-    };
-    const docRef = await addDoc(collection(db, 'properties'), propertyData);
-    return docRef.id;
+    try {
+        const db = getFirestore();
+        const propertyData = {
+            title,
+            description,
+            price,
+            location,
+            rooms,
+            bathrooms,
+            pictures: pictureLinks, // Save picture links in Firestore
+            createdAt: new Date(),
+        };
+
+        const docRef = await addDoc(collection(db, 'properties'), propertyData);
+        console.log(`Property added with ID: ${docRef.id}`);
+        return docRef.id;
+    } catch (error) {
+        console.error("Error adding property listing:", error);
+        throw new Error("Failed to add property listing. Please try again.");
+    }
 }
 
 // Function to retrieve property listings (for users)
