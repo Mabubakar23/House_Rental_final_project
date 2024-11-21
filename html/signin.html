@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
     <div class="container">
@@ -16,7 +16,7 @@
             <input type="password" id="signin-password" placeholder="Password" required>
             <button type="submit">Sign In</button>
         </form>
-        <p>Don't have an account? <a href="html/signup.html">Sign up here</a></p>
+        <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
     </div>
 
     <!-- Firebase SDKs and Custom Script -->
@@ -24,7 +24,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
     
     <script type="module">
-        import { signIn } from './js/app.js';
+        import { signIn } from '../js/app.js';
 
         document.getElementById('signin-form').addEventListener('submit', (e) => {
             e.preventDefault();
