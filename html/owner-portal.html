@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Portal</title>
+    <link rel="stylesheet" href="../css/owner-portal-styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="#" id="logout">Log Out</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>List a Property</h2>
+        <form id="property-form">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" placeholder="Property title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" placeholder="Property description" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Price per night</label>
+                <input type="number" id="price" placeholder="Price" required>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" placeholder="Location" required>
+            </div>
+
+            <div class="form-group">
+                <label for="rooms">Number of Rooms</label>
+                <input type="number" id="rooms" placeholder="Rooms" required>
+            </div>
+
+            <div class="form-group">
+                <label for="bathrooms">Number of Bathrooms</label>
+                <input type="number" id="bathrooms" placeholder="Bathrooms" required>
+            </div>
+
+            <button type="submit" class="btn-primary">Submit Property</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 Residential Rentals. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+
+    <!-- Custom Script -->
+    <script type="module">
+        import { addPropertyListing, logOut } from '../js/app.js';
+
+        // Handle property form submission
+        document.addEventListener('DOMContentLoaded', () => {
+            const propertyForm = document.getElementById('property-form');
+
+            if (propertyForm) {
+                propertyForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    const title = document.getElementById('title').value;
+                    const description = document.getElementById('description').value;
+                    const price = parseFloat(document.getElementById('price').value);
+                    const location = document.getElementById('location').value;
+                    const rooms = parseInt(document.getElementById('rooms').value, 10);
+                    const bathrooms = parseInt(document.getElementById('bathrooms').value, 10);
+
+                    try {
+                        await addPropertyListing(title, description, price, location, rooms, bathrooms);
+                        alert('Property listed successfully!');
+                        propertyForm.reset();
+                    } catch (error) {
+                        alert('Error listing property: ' + error.message);
+                    }
+                });
+            } else {
+                console.error("Property form not found.");
+            }
+        });
+
+        // Log out functionality
+        document.getElementById('logout').addEventListener('click', () => {
+            logOut();
+        });
+    </script>
+</body>
+</html>

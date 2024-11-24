@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Portal</title>
+    <link rel="stylesheet" href="../css/user-portal-styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="#" id="logout">Log Out</a></li>
+                <li><a href="support.html">Support</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Available Properties</h1>
+        <div id="search-container">
+            <input type="text" id="search-bar" placeholder="Search by location, price, or rooms..." />
+            <button id="search-button">Search</button>
+        </div>
+        <div id="properties-container">
+            <!-- Property listings will be dynamically loaded here -->
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Residential Rentals. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+
+    <!-- Custom Scripts -->
+    <script type="module">
+        import { fetchProperties, logOut } from '../js/app.js';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const propertiesContainer = document.getElementById('properties-container');
+            const searchBar = document.getElementById('search-bar');
+            const searchButton = document.getElementById('search-button');
+
+            let properties = await fetchProperties();
+
+            // Function to render properties
+            function renderProperties(filteredProperties) {
+                propertiesContainer.innerHTML = ''; // Clear current properties
+                filteredProperties.forEach((property) => {
+                    const propertyCard = document.createElement('div');
+                    propertyCard.classList.add('property-card');
+
+                    propertyCard.innerHTML = `
+                        <h3>${property.title}</h3>
+                        <p>${property.description}</p>
+                        <p><strong>Price:</strong> $${property.price} per night</p>
+                        <p><strong>Location:</strong> ${property.location}</p>
+                        <p><strong>Rooms:</strong> ${property.rooms}</p>
+                        <p><strong>Bathrooms:</strong> ${property.bathrooms}</p>
+                        <button class="btn-start-negotiation" data-title="${property.title}">Start Negotiation</button>
+                        <button class="btn-favorite" data-id="${property.id}">&hearts; Favorite</button>
+                    `;
+
+                    propertiesContainer.appendChild(propertyCard);
+                });
+
+                addEventListeners();
+            }
+
+            // Initial render
+            renderProperties(properties);
+
+            // Search functionality
+            searchButton.addEventListener('click', () => {
+                const query = searchBar.value.toLowerCase();
+                const filteredProperties = properties.filter((property) => {
+                    return (
+                        property.location.toLowerCase().includes(query) ||
+                        property.price.toString().includes(query) ||
+                        property.rooms.toString().includes(query)
+                    );
+                });
+                renderProperties(filteredProperties);
+            });
+
+            // Add event listeners to property actions
+            function addEventListeners() {
+                const negotiationButtons = document.querySelectorAll('.btn-start-negotiation');
+                const favoriteButtons = document.querySelectorAll('.btn-favorite');
+
+                negotiationButtons.forEach((button) => {
+                    button.addEventListener('click', (e) => {
+                        const propertyTitle = e.target.getAttribute('data-title');
+                        openLiveChat(propertyTitle);
+                    });
+                });
+
+                favoriteButtons.forEach((button) => {
+                    button.addEventListener('click', (e) => {
+                        const propertyId = e.target.getAttribute('data-id');
+                        toggleFavorite(propertyId, e.target);
+                    });
+                });
+            }
+
+            // Function to open live chat in a new window
+            function openLiveChat(propertyTitle) {
+                const chatWindow = window.open(
+                    'https://www3.cbox.ws/box/?boxid=3542306&boxtag=hsUZEg',
+                    '_blank',
+                    'width=500,height=600,scrollbars=yes,resizable=yes'
+                );
+                chatWindow.document.title = `Negotiation - ${propertyTitle}`;
+                alert(`Negotiation Chat Closed: ${propertyTitle}`);
+            }
+
+            // Toggle favorite status
+            function toggleFavorite(propertyId, button) {
+                if (button.classList.contains('favorited')) {
+                    button.classList.remove('favorited');
+                    button.textContent = '♥ Favorite';
+                    alert('Removed from favorites');
+                } else {
+                    button.classList.add('favorited');
+                    button.textContent = '★ Favorited';
+                    alert('Added to favorites');
+                }
+            }
+        });
+
+        // Log out functionality
+        document.getElementById('logout').addEventListener('click', () => {
+            logOut();
+        });
+    </script>
+
+    <style>
+        /* Inline styles for testing*/
+        #search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #search-bar {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        #search-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .property-card {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .property-card h3 {
+            margin-top: 0;
+        }
+
+        .btn-start-negotiation,
+        .btn-favorite {
+            margin-right: 10px;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-favorite.favorited {
+            color: gold;
+        }
+    </style>
+</body>
+</html>

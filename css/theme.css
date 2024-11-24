@@ -1,0 +1,90 @@
+/* Light Theme (Default) */
+:root {
+    --background-color: #f9f9f9;
+    --text-color: #969da5;
+    --header-footer-background: #0e5381;
+    --header-footer-text-color: white;
+    --primary-color: #3498db;
+    --primary-hover-color: #2f6d9c;
+    --border-color: #dddddd;
+    --card-background-color: #ffffff;
+    --button-background-color: #3498db;
+    --button-hover-color: #416e91;
+}
+
+/* Dark Theme */
+body.dark-theme {
+    --background-color: #2e2f2e;
+    --text-color: #f1f1f1;
+    --header-footer-background: #2f312f;
+    --header-footer-text-color: #f9f9f9;
+    --primary-color: #235707;
+    --primary-hover-color: #266c0a;
+    --border-color: #393b3a;
+    --card-background-color: #292929;
+    --button-background-color: #045402;
+    --button-hover-color: #26540c;
+}
+
+/* Apply Theme Variables */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+header, footer {
+    background-color: var(--header-footer-background);
+    color: var(--header-footer-text-color);
+}
+
+header nav ul li a {
+    color: var(--header-footer-text-color);
+}
+
+header nav ul li a:hover,
+header nav ul li a.active {
+    background-color: var(--primary-hover-color);
+}
+
+button {
+    background-color: var(--button-background-color);
+    color: var(--header-footer-text-color);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: var(--button-hover-color);
+}
+
+.form-container, .property-form, .profile-section, .support-section, .features-list li {
+    background-color: var(--card-background-color);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.features-list li:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Links */
+a {
+    color: var(--primary-color);
+}
+
+a:hover {
+    color: var(--primary-hover-color);
+}
+
+/* Footer Links */
+footer a {
+    color: var(--header-footer-text-color);
+}
+
+footer a:hover {
+    color: var(--primary-color);
+}
