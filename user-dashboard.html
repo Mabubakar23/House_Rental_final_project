@@ -7,16 +7,24 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h2>Available Properties</h2>
-    <div id="property-list"></div> <!-- Ensure this element exists -->
-
-    <!-- Firebase and Custom Script -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="#" id="logout">Log Out</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>Available Properties</h2>
+        <div id="property-list"></div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Residential Rentals. All Rights Reserved.</p>
+    </footer>
 
     <script type="module">
-        import { fetchProperties } from './js/app.js'; // Adjust path if needed
+        import { fetchProperties, auth } from './js/app.js';
 
         document.addEventListener('DOMContentLoaded', async () => {
             const propertyList = document.getElementById('property-list');
@@ -40,13 +48,20 @@
                         <p><strong>Location:</strong> ${property.location}</p>
                         <p><strong>Rooms:</strong> ${property.rooms}</p>
                         <p><strong>Bathrooms:</strong> ${property.bathrooms}</p>
-                        <button>Start Negotiation</button>
                     `;
                     propertyList.appendChild(propertyItem);
                 });
             } catch (error) {
                 console.error("Error fetching properties:", error.message);
             }
+        });
+
+        document.getElementById('logout').addEventListener('click', () => {
+            auth.signOut().then(() => {
+                window.location.href = '../signin.html';
+            }).catch((error) => {
+                console.error("Error during logout:", error.message);
+            });
         });
     </script>
 </body>
