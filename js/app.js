@@ -1,21 +1,22 @@
-//app.js
-// Import Firebase SDKs
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { 
     getAuth, 
+    setPersistence, 
+    browserLocalPersistence, 
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
-    signOut, 
-    onAuthStateChanged 
+    signOut 
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import { 
     getFirestore, 
     collection, 
     addDoc, 
-    setDoc, 
     doc, 
     getDoc, 
-    getDocs 
+    deleteDoc, 
+    getDocs, 
+    query, 
+    where 
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 // Firebase Configuration
@@ -31,8 +32,13 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const auth = getAuth(app);
 const db = getFirestore(app);
+
+// Set Persistence
+setPersistence(auth, browserLocalPersistence).catch((error) => {
+    console.error("Error setting persistence:", error.message);
+});
 
 /* =======================
    Authentication Functions
@@ -45,11 +51,7 @@ export async function signUp(email, password, role) {
         const user = userCredential.user;
 
         // Save user role in Firestore
-        await setDoc(doc(db, "users", user.uid), {
-            email: email,
-            role: role
-        });
-
+        await addDoc(doc(db, "users", user.uid), { email, role });
         alert('Account created successfully!');
         window.location.href = '../html/signin.html'; // Redirect to sign-in page
     } catch (error) {
@@ -63,21 +65,15 @@ export async function signIn(email, password) {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // Fetch user role from Firestore
         const userDoc = await getDoc(doc(db, "users", user.uid));
         if (userDoc.exists()) {
             const userData = userDoc.data();
 
-            // Redirect based on role
             if (userData.role === "owner") {
-                window.location.href = '../html/owner-portal.html';
+                window.location.href = '../html/host-properties.html';
             } else if (userData.role === "user") {
                 window.location.href = '../html/user-portal.html';
-            } else {
-                alert("Unknown role. Please contact support.");
             }
-        } else {
-            alert("No user data found. Please contact support.");
         }
     } catch (error) {
         alert('Sign-in error: ' + error.message);
@@ -88,11 +84,10 @@ export async function signIn(email, password) {
 export function logOut() {
     signOut(auth)
         .then(() => {
-            alert("Logged out successfully!");
-            window.location.href = "../index.html"; // Redirect to home page
+            window.location.href = "../index.html";
         })
         .catch((error) => {
-            alert("Error logging out: " + error.message);
+            alert(error.message);
         });
 }
 
@@ -100,60 +95,43 @@ export function logOut() {
    Firestore Functions
    ======================= */
 
-// Add Property Listing (For Owners)
+// Add Property
 export async function addPropertyListing(title, description, price, location, rooms, bathrooms) {
-    try {
-        await addDoc(collection(db, "properties"), {
-            title,
-            description,
-            price,
-            location,
-            rooms,
-            bathrooms,
-            timestamp: new Date()
-        });
-    } catch (error) {
-        throw new Error('Failed to add property: ' + error.message);
-    }
+    const user = auth.currentUser;
+    if (!user) throw new Error("No user is logged in.");
+
+    await addDoc(collection(db, "properties"), {
+        title,
+        description,
+        price,
+        location,
+        rooms,
+        bathrooms,
+        hostId: user.uid,
+        timestamp: new Date()
+    });
 }
 
-// Fetch Property Listings (For Users)
+// Fetch Properties for Host
+export async function fetchHostProperties() {
+    const user = auth.currentUser;
+    if (!user) throw new Error("No user is logged in.");
+
+    const querySnapshot = await getDocs(
+        query(collection(db, "properties"), where("hostId", "==", user.uid))
+    );
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+}
+
+// Delete Property
+export async function deleteProperty(propertyId) {
+    await deleteDoc(doc(db, "properties", propertyId));
+}
+
+// Fetch Public Properties
 export async function fetchProperties() {
-    try {
-        const querySnapshot = await getDocs(collection(db, "properties"));
-        const properties = [];
-        querySnapshot.forEach((doc) => {
-            properties.push({ id: doc.id, ...doc.data() });
-        });
-        return properties;
-    } catch (error) {
-        alert("Error fetching properties: " + error.message);
-        return [];
-    }
+    const querySnapshot = await getDocs(
+        query(collection(db, "properties"))
+    );
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 }
-
-// Add Support Message
-export async function addSupportMessage(name, email, subject, message) {
-    try {
-        await addDoc(collection(db, "support"), {
-            name,
-            email,
-            subject,
-            message,
-            timestamp: new Date()
-        });
-    } catch (error) {
-        throw new Error('Failed to send support message: ' + error.message);
-    }
-}
-
-/* =======================
-   Auth State Listener
-   ======================= */
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        console.log("User is signed in: ", user.email);
-    } else {
-        console.log("No user is signed in.");
-    }
-});
