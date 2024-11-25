@@ -1,3 +1,4 @@
+//propertyService.js
 import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, limit, startAfter } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const db = getFirestore();

@@ -1,3 +1,4 @@
+//script.js
 // Theme toggle logic
 const toggleButton = document.getElementById('theme-toggle');
 const body = document.body;

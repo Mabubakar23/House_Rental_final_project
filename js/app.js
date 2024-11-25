@@ -1,4 +1,5 @@
-// Import Firebase SDK
+//app.js
+// Import Firebase SDKs
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { 
     getAuth, 
@@ -17,7 +18,7 @@ import {
     getDocs 
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-// Firebase configuration
+// Firebase Configuration
 const firebaseConfig = {
     apiKey: "AIzaSyA2LC916BFUO-LHC25Gek0y595GxFQA0ds",
     authDomain: "house-rentals-12c7d.firebaseapp.com",
@@ -111,10 +112,8 @@ export async function addPropertyListing(title, description, price, location, ro
             bathrooms,
             timestamp: new Date()
         });
-
-        alert("Property listing added successfully!");
     } catch (error) {
-        alert("Error adding property listing: " + error.message);
+        throw new Error('Failed to add property: ' + error.message);
     }
 }
 
@@ -143,10 +142,8 @@ export async function addSupportMessage(name, email, subject, message) {
             message,
             timestamp: new Date()
         });
-
-        alert("Support message sent successfully!");
     } catch (error) {
-        alert("Error sending support message: " + error.message);
+        throw new Error('Failed to send support message: ' + error.message);
     }
 }
 
