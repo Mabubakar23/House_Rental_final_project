@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Portal</title>
-    <link rel="stylesheet" href="../css/user-portal-styles.css">
+    <link rel="stylesheet" href="../css/user-portal.css">
 </head>
 <body>
     <header>
@@ -26,6 +26,7 @@
             <!-- Property listings will be dynamically loaded here -->
         </div>
     </main>
+
     <footer>
         <p>&copy; 2024 Residential Rentals. All Rights Reserved.</p>
     </footer>
@@ -60,7 +61,7 @@
                         <p><strong>Location:</strong> ${property.location}</p>
                         <p><strong>Rooms:</strong> ${property.rooms}</p>
                         <p><strong>Bathrooms:</strong> ${property.bathrooms}</p>
-                        <button class="btn-start-negotiation" data-title="${property.title}">Start Negotiation</button>
+                        <button class="btn-start-negotiation" data-id="${property.id}" data-title="${property.title}">Start Negotiation</button>
                         <button class="btn-favorite" data-id="${property.id}">&hearts; Favorite</button>
                     `;
 
@@ -93,8 +94,9 @@
 
                 negotiationButtons.forEach((button) => {
                     button.addEventListener('click', (e) => {
+                        const propertyId = e.target.getAttribute('data-id');
                         const propertyTitle = e.target.getAttribute('data-title');
-                        openLiveChat(propertyTitle);
+                        openLiveChat(propertyId, propertyTitle); // Open chat with unique channel
                     });
                 });
 
@@ -106,15 +108,69 @@
                 });
             }
 
-            // Function to open live chat in a new window
-            function openLiveChat(propertyTitle) {
-                const chatWindow = window.open(
-                    'https://www3.cbox.ws/box/?boxid=3542306&boxtag=hsUZEg',
-                    '_blank',
-                    'width=500,height=600,scrollbars=yes,resizable=yes'
-                );
-                chatWindow.document.title = `Negotiation - ${propertyTitle}`;
-                alert(`Negotiation Chat Closed: ${propertyTitle}`);
+            // Function to open live chat with a unique channel for each property
+            async function openLiveChat(propertyId, propertyTitle) {
+                const apiUrl = `https://www.cbox.ws/apis/threads.php?id=3-3542476-e7grMY&key=7cdc0daf6d524bd409cd70d7bdba3979&act=mkthread`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: new URLSearchParams({
+                            'title': propertyTitle // Only send title
+                        })
+                    });
+
+                    const data = await response.json(); // Parse the response as JSON
+
+                    // Log the entire response for debugging
+                    console.log('API Response:', data);
+
+                    if (data.success) {
+                        // Get the channel URL from the API response
+                        const channelUrl = data.url;
+
+                        // Log the generated channel URL for debugging
+                        console.log('Generated Channel URL:', channelUrl);
+
+                        // Check if the URL is valid
+                        if (!channelUrl || channelUrl.includes("error")) {
+                            console.error('Error: Invalid or incomplete channel URL returned');
+                            alert('Failed to generate valid chat channel.');
+                            return;
+                        }
+
+                        // Calculate position to center the window
+                        const width = 500;
+                        const height = 600;
+                        const left = (window.innerWidth / 2) - (width / 2);
+                        const top = (window.innerHeight / 2) - (height / 2);
+
+                        // Try to open the chat window
+                        const chatWindow = window.open(
+                            channelUrl, // Use the dynamic URL returned by the API
+                            '_blank', // Open in a new tab
+                            `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`
+                        );
+
+                        // Check if the window was successfully opened
+                        if (chatWindow) {
+                            chatWindow.document.title = `Negotiation - ${propertyTitle}`;
+                        } else {
+                            alert("Failed to open the chat window. Please allow pop-ups.");
+                        }
+                    } else {
+                        // If the API response is unsuccessful, log the error message
+                        console.error('Error creating thread:', data.message || 'Unknown error');
+                        alert('Failed to create a negotiation chat. Please try again.');
+                    }
+                } catch (error) {
+                    // Catch any other errors and log them
+                    console.error('Error occurred while creating chat thread:', error);
+                    alert('An error occurred while creating the negotiation chat.');
+                }
             }
 
             // Toggle favorite status
@@ -136,50 +192,5 @@
             logOut();
         });
     </script>
-
-    <style>
-        /* Inline styles for testing*/
-        #search-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        #search-bar {
-            width: 300px;
-            padding: 10px;
-            font-size: 16px;
-            margin-right: 10px;
-        }
-
-        #search-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .property-card {
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
-
-        .property-card h3 {
-            margin-top: 0;
-        }
-
-        .btn-start-negotiation,
-        .btn-favorite {
-            margin-right: 10px;
-            padding: 10px 15px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .btn-favorite.favorited {
-            color: gold;
-        }
-    </style>
 </body>
 </html>
