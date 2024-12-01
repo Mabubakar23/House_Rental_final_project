@@ -72,7 +72,14 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Submit properties in batch
             for (const property of propertyData) {
-                await addPropertyListing(property.title, property.description, property.price, property.location, property.rooms, property.bathrooms);
+                await addPropertyListing(
+                    property.title, 
+                    property.description, 
+                    property.price, 
+                    property.location, 
+                    property.rooms, 
+                    property.bathrooms
+                );
             }
             alert('All properties listed successfully!');
             propertyFormsContainer.innerHTML = ''; // Clear forms

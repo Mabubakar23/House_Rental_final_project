@@ -1,16 +1,12 @@
 //support.html
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Support</title>
-    <!-- Stylesheets  -->
-
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/support-styles.css">
-    <link rel="stylesheet" href="../css/theme.css">
 </head>
 <body>
     <header>
@@ -59,22 +55,11 @@
 
     <!-- Custom Scripts -->
     <script type="module" src="../js/theme.js"></script>
-    <script>
-        // Initialize the theme toggle button
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme');
-        });
-    </script>
-
-    <script type="module" src="../js/authService.js"></script>
-    <script type="module" src="../js/propertyService.js"></script>
     <script type="module">
-        import { addSupportMessage } from '../js/propertyService.js';
+        import { addSupportMessage } from '../js/app.js';
 
-        // Support form submission
         document.getElementById('support-form').addEventListener('submit', async (e) => {
-            e.preventDefault(); // Prevent default form submission behavior
-
+            e.preventDefault();
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const subject = document.getElementById('subject').value.trim();
@@ -88,7 +73,7 @@
             try {
                 await addSupportMessage(name, email, subject, message);
                 alert('Your message has been sent successfully!');
-                document.getElementById('support-form').reset(); // Clear form fields
+                document.getElementById('support-form').reset();
             } catch (error) {
                 alert('Error sending message: ' + error.message);
             }

@@ -1,3 +1,4 @@
+//app.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { 
     getAuth, 
@@ -11,8 +12,9 @@ import {
     getFirestore, 
     collection, 
     addDoc, 
+    setDoc, 
     doc, 
-    getDoc, 
+    getDoc, // Importing getDoc to resolve the error
     deleteDoc, 
     getDocs, 
     query, 
@@ -51,7 +53,7 @@ export async function signUp(email, password, role) {
         const user = userCredential.user;
 
         // Save user role in Firestore
-        await addDoc(doc(db, "users", user.uid), { email, role });
+        await setDoc(doc(db, "users", user.uid), { email, role });
         alert('Account created successfully!');
         window.location.href = '../html/signin.html'; // Redirect to sign-in page
     } catch (error) {
@@ -65,7 +67,8 @@ export async function signIn(email, password) {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        const userDoc = await getDoc(doc(db, "users", user.uid));
+        // Fetch user role from Firestore
+        const userDoc = await getDoc(doc(db, "users", user.uid)); // Corrected getDoc usage
         if (userDoc.exists()) {
             const userData = userDoc.data();
 
@@ -74,6 +77,8 @@ export async function signIn(email, password) {
             } else if (userData.role === "user") {
                 window.location.href = '../html/user-portal.html';
             }
+        } else {
+            throw new Error("User data not found in the database.");
         }
     } catch (error) {
         alert('Sign-in error: ' + error.message);
@@ -134,4 +139,20 @@ export async function fetchProperties() {
         query(collection(db, "properties"))
     );
     return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+}
+
+// Add Support Message
+export async function addSupportMessage(name, email, subject, message) {
+    try {
+        await addDoc(collection(db, "supportMessages"), {
+            name,
+            email,
+            subject,
+            message,
+            timestamp: new Date()
+        });
+        alert('Support message sent successfully!');
+    } catch (error) {
+        throw new Error("Error saving support message: " + error.message);
+    }
 }

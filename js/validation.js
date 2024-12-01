@@ -1,4 +1,4 @@
-//validation
+//validation.js
 export function validateForm(formId) {
     const form = document.getElementById(formId);
     const inputs = form.querySelectorAll("input[required], textarea[required]");

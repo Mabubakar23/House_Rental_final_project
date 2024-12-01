@@ -34,3 +34,5 @@ export async function fetchProperties(filters = {}, pageSize = 10, lastDoc = nul
         alert("Error fetching properties: " + error.message);
     }
 }
+
+
