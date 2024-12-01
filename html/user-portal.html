@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <h2>Available Properties</h2>
@@ -18,7 +18,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
 
     <script type="module">
-        import { fetchProperties } from './js/app.js'; // Adjust path if needed
+        import { fetchProperties } from '/js/app.js'; // Adjust path if needed
 
         document.addEventListener('DOMContentLoaded', async () => {
             const propertyList = document.getElementById('property-list');
