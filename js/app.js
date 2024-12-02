@@ -51,7 +51,7 @@ export function signIn(email, password) {
             if (userDoc.exists()) {
                 const userData = userDoc.data();
                 if (userData.role === "host") {
-                    window.location.href = 'host-properties.html'; // Redirect to host dashboard
+                    window.location.href = 'owner-portal.html'; // Redirect to host dashboard
                 } else {
                     window.location.href = 'user-portal.html'; // Redirect to user dashboard
                 }

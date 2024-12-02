@@ -7,6 +7,18 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="signin.html">Login</a></li>
+                <li><a href="signup.html">Sign up</a></li>
+                <li><a href="dashboard.html">Rental Portal</a></li>
+                <li><a href="profile.html">Profile Settings</a></li>
+                <li><a href="support.html">Support</a></li>
+            </ul>
+        </nav>
+    </header>    
     <h2>List a Property</h2>
     <form id="property-form">
         <!-- Existing Form Fields -->
@@ -50,6 +62,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js"></script>
     <script type="module">
         import { addPropertyListing, uploadHousePictures } from '/js/app.js';
 
