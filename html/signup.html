@@ -1,27 +1,28 @@
-signup.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="../css/signup-styles.css">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <header>
         <nav>
             <ul>
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="signin.html">Sign In</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="signin.html">Login</a></li>
+                <li><a href="signup.html">Sign up</a></li>
+                <li><a href="dashboard.html">Rental Portal</a></li>
+                <li><a href="profile.html">Profile Settings</a></li>
                 <li><a href="support.html">Support</a></li>
             </ul>
         </nav>
-    </header>
+    </header>   
     <main>
         <div class="container">
             <h2>Create an Account</h2>
-            <form id="signup-form">
+            <form id="signup-form" style="width: 50%; margin: auto;">
                 <div class="form-group">
                     <label for="signup-email">Email</label>
                     <input type="email" id="signup-email" placeholder="Enter your email" required>
@@ -36,8 +37,8 @@ signup.html
                         <option value="user">User</option>
                         <option value="owner">Owner</option>
                     </select>
+                    <button type="submit" class="btn-primary">Sign Up</button>
                 </div>
-                <button type="submit" class="btn-primary">Sign Up</button>
             </form>
             <p>Already have an account? <a href="signin.html">Sign in here</a></p>
         </div>
@@ -52,7 +53,7 @@ signup.html
 
     <!-- Custom Script -->
     <script type="module">
-        import { signUp } from '../js/app.js';
+        import { signUp } from '/js/app.js';
 
         document.getElementById('signup-form').addEventListener('submit', (e) => {
             e.preventDefault();

@@ -5,6 +5,8 @@
     <meta name=" viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentals</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="index-styles.css">
+    <link rel="stylesheet" href="theme.css">
     <script src="/js/script.js" defer></script>
     <script src="/js/app.js" defer></script>
 </head>
@@ -15,7 +17,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="signin.html">Login</a></li>
                 <li><a href="signup.html">Sign up</a></li>
-                <li><a href="profile.html">Profile Settings</a></li>
+                <li><a href="profile.html">Profile</a></li>
                 <li><a href="support.html">Support</a></li>
             </ul>
         </nav>
@@ -77,5 +79,17 @@
     <footer>
         <p>&copy; 2024 Residential Rentals. All Rights Reserved.</p>
     </footer>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+
+    <!-- Custom Scripts -->
+    <script type="module" src="js/theme.js"></script>
+    <script>
+        // Initialize the theme toggle button
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+        });
+    </script>    
 </body>
 </html>
