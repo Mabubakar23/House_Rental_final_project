@@ -91,6 +91,7 @@ section.features ul li div.icon {
     display: inline-block;
     margin: 5px;
     width: 400px;
+    vertical-align: top;
 }
 section.features ul li div.icon img {
     height: 300px;
