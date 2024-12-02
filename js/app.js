@@ -1,10 +1,27 @@
-// Import Firebase SDK (only needed if using ES6 modules, otherwise include in HTML directly)
+//app.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, setDoc, doc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"; // Added getDocs
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js';
+import { 
+    getAuth, 
+    setPersistence, 
+    browserLocalPersistence, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    signOut 
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { 
+    getFirestore, 
+    collection, 
+    addDoc, 
+    setDoc, 
+    doc, 
+    getDoc, // Importing getDoc to resolve the error
+    deleteDoc, 
+    getDocs, 
+    query, 
+    where 
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-// Firebase configuration
+// Firebase Configuration
 const firebaseConfig = {
     apiKey: "AIzaSyA2LC916BFUO-LHC25Gek0y595GxFQA0ds",
     authDomain: "house-rentals-12c7d.firebaseapp.com",
@@ -15,117 +32,127 @@ const firebaseConfig = {
     measurementId: "G-54J13NNWH7"
 };
 
-// Initialize Firebase and Firestore
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Sign-Up Function (with Role)
-export function signUp(email, password, role) {
-    return createUserWithEmailAndPassword(auth, email, password)
-        .then(async (userCredential) => {
-            const user = userCredential.user;
+// Set Persistence
+setPersistence(auth, browserLocalPersistence).catch((error) => {
+    console.error("Error setting persistence:", error.message);
+});
 
-            // Save user role in Firestore
-            await setDoc(doc(db, "users", user.uid), {
-                email: email,
-                role: role
-            });
+/* =======================
+   Authentication Functions
+   ======================= */
 
-            alert('Account created successfully');
-            window.location.href = 'signin.html'; // Redirect to sign-in page
-        })
-        .catch((error) => {
-            alert('Error: ' + error.message);
-        });
+// Sign-Up Function
+export async function signUp(email, password, role) {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Save user role in Firestore
+        await setDoc(doc(db, "users", user.uid), { email, role });
+        alert('Account created successfully!');
+        window.location.href = '../html/signin.html'; // Redirect to sign-in page
+    } catch (error) {
+        alert('Sign-up error: ' + error.message);
+    }
 }
 
-// Sign-In Function (with Role Check and Redirection)
-export function signIn(email, password) {
-    return signInWithEmailAndPassword(auth, email, password)
-        .then(async (userCredential) => {
-            const user = userCredential.user;
+// Sign-In Function
+export async function signIn(email, password) {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
-            // Fetch user role from Firestore
-            const userDoc = await getDoc(doc(db, "users", user.uid));
-            if (userDoc.exists()) {
-                const userData = userDoc.data();
-                if (userData.role === "host") {
-                    window.location.href = 'owner-portal.html'; // Redirect to host dashboard
-                } else {
-                    window.location.href = 'user-portal.html'; // Redirect to user dashboard
-                }
-            } else {
-                console.error("No user role found!");
+        // Fetch user role from Firestore
+        const userDoc = await getDoc(doc(db, "users", user.uid)); // Corrected getDoc usage
+        if (userDoc.exists()) {
+            const userData = userDoc.data();
+
+            if (userData.role === "owner") {
+                window.location.href = '../html/host-properties.html';
+            } else if (userData.role === "user") {
+                window.location.href = '../html/user-portal.html';
             }
+        } else {
+            throw new Error("User data not found in the database.");
+        }
+    } catch (error) {
+        alert('Sign-in error: ' + error.message);
+    }
+}
+
+// Log-Out Function
+export function logOut() {
+    signOut(auth)
+        .then(() => {
+            window.location.href = "../index.html";
         })
         .catch((error) => {
-            alert('Error: ' + error.message);
+            alert(error.message);
         });
 }
 
+/* =======================
+   Firestore Functions
+   ======================= */
 
-// Upload multiple house pictures
-export async function uploadHousePictures(files) {
-    try {
-        const storage = getStorage(); // Initialize Firebase Storage
-        const folderPath = 'house_picture/';
-        let uploadPromises = [];
+// Add Property
+export async function addPropertyListing(title, description, price, location, rooms, bathrooms) {
+    const user = auth.currentUser;
+    if (!user) throw new Error("No user is logged in.");
 
-        for (let file of files) {
-            // Generate a unique file name using timestamp
-            const uniqueFileName = `${Date.now()}-${file.name}`;
-            const fileRef = ref(storage, `${folderPath}${uniqueFileName}`);
-
-            // Upload the file and get the download URL
-            const uploadTask = uploadBytes(fileRef, file).then(async (snapshot) => {
-                const downloadURL = await getDownloadURL(snapshot.ref);
-                console.log(`Uploaded file: ${file.name}, URL: ${downloadURL}`);
-                return downloadURL;
-            });
-
-            uploadPromises.push(uploadTask);
-        }
-
-        // Wait for all uploads to complete
-        return await Promise.all(uploadPromises);
-    } catch (error) {
-        console.error("Error uploading house pictures:", error);
-        throw new Error("Failed to upload house pictures. Please try again.");
-    }
-}
-
-
-// Function to add a property listing (for hosts), including picture links
-export async function addPropertyListing(title, description, price, location, rooms, bathrooms, pictureLinks = []) {
-    try {
-        const db = getFirestore();
-        const propertyData = {
-            title,
-            description,
-            price,
-            location,
-            rooms,
-            bathrooms,
-            pictures: pictureLinks, // Save picture links in Firestore
-            createdAt: new Date(),
-        };
-
-        const docRef = await addDoc(collection(db, 'properties'), propertyData);
-        console.log(`Property added with ID: ${docRef.id}`);
-        return docRef.id;
-    } catch (error) {
-        console.error("Error adding property listing:", error);
-        throw new Error("Failed to add property listing. Please try again.");
-    }
-}
-
-// Function to retrieve property listings (for users)
-export async function fetchProperties() {
-    const querySnapshot = await getDocs(collection(db, "properties"));
-    const properties = [];
-    querySnapshot.forEach((doc) => {
-        properties.push({ id: doc.id, ...doc.data() });
+    await addDoc(collection(db, "properties"), {
+        title,
+        description,
+        price,
+        location,
+        rooms,
+        bathrooms,
+        hostId: user.uid,
+        timestamp: new Date()
     });
-    return properties;
+}
+
+// Fetch Properties for Host
+export async function fetchHostProperties() {
+    const user = auth.currentUser;
+    if (!user) throw new Error("No user is logged in.");
+
+    const querySnapshot = await getDocs(
+        query(collection(db, "properties"), where("hostId", "==", user.uid))
+    );
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+}
+
+// Delete Property
+export async function deleteProperty(propertyId) {
+    await deleteDoc(doc(db, "properties", propertyId));
+}
+
+// Fetch Public Properties
+export async function fetchProperties() {
+    const querySnapshot = await getDocs(
+        query(collection(db, "properties"))
+    );
+    return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+}
+
+// Add Support Message
+export async function addSupportMessage(name, email, subject, message) {
+    try {
+        await addDoc(collection(db, "supportMessages"), {
+            name,
+            email,
+            subject,
+            message,
+            timestamp: new Date()
+        });
+        alert('Support message sent successfully!');
+    } catch (error) {
+        throw new Error("Error saving support message: " + error.message);
+    }
 }

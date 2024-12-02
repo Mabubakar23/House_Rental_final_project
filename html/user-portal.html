@@ -1,87 +1,90 @@
+//user-portal.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="../css/user-portal-styles.css">
 </head>
 <body>
     <header>
         <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="signin.html">Login</a></li>
-                <li><a href="signup.html">Sign up</a></li>
-                <li><a href="dashboard.html">Rental Portal</a></li>
-                <li><a href="profile.html">Profile Settings</a></li>
+                <li><a href="#" id="logout">Log Out</a></li>
                 <li><a href="support.html">Support</a></li>
             </ul>
         </nav>
-    </header>    
-    <h2>Available Properties</h2>
-    <div id="property-list"></div> <!-- Ensure this element exists -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    
-    <!-- Firebase and Custom Script -->
+    </header>
+    <main>
+        <h1>Available Properties</h1>
+        <div id="search-container">
+            <input type="text" id="search-bar" placeholder="Search by location, price, or rooms..." />
+            <button id="search-button">Search</button>
+        </div>
+        <div id="properties-container">
+            <!-- Property listings will be dynamically loaded here -->
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Residential Rentals. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
 
-    <script type="module">
-        import { fetchProperties } from '/js/app.js'; // Adjust path if needed
+    <!-- Custom Scripts -->
+    <script type="module" src="../js/user-portal.js"></script>
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            const propertyList = document.getElementById('property-list');
+    <style>
+        #search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
 
-            if (!propertyList) {
-                console.error("Element with ID 'property-list' not found.");
-                return;
-            }
+        #search-bar {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
 
-            try {
-                const properties = await fetchProperties();
-                propertyList.innerHTML = "";
+        #search-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-                properties.forEach((property, index) => {
-                    const propertyItem = document.createElement("div");
-                    propertyItem.classList.add("property-item");
-                    propertyItem.innerHTML = `
-                        <h3>${property.title}</h3>
-                        <p>${property.description}</p>
-                        <p><strong>Price:</strong> $${property.price} per night</p>
-                        <p><strong>Location:</strong> ${property.location}</p>
-                        <p><strong>Rooms:</strong> ${property.rooms}</p>
-                        <p><strong>Bathrooms:</strong> ${property.bathrooms}</p>
-                        <div class="calendar-container" id="calendar-${index}">
-                            <label for="flatpickr-${index}" class="calendar-label">Select Dates:</label>
-                            <input type="text" id="flatpickr-${index}" class="flatpickr">
-                            <div class="selected-dates">
-                                <span><strong>Start:</strong> <span id="start-date-${index}">None</span></span>
-                                <span><strong>End:</strong> <span id="end-date-${index}">None</span></span>
-                            </div>
-                        </div>
-                        <button>Start Negotiation</button>
-                    `;
-                    propertyList.appendChild(propertyItem);
+        .property-card {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
 
-                    // Initialize Flatpickr
-                    flatpickr(`#flatpickr-${index}`, {
-                        mode: "range",
-                        onChange: function(selectedDates) {
-                            if (selectedDates.length === 2) {
-                                const [startDate, endDate] = selectedDates;
-                                document.getElementById(`start-date-${index}`).innerText = startDate.toLocaleDateString();
-                                document.getElementById(`end-date-${index}`).innerText = endDate.toLocaleDateString();
-                            }
-                        },
-                    });                    
-                });
-            } catch (error) {
-                console.error("Error fetching properties:", error.message);
-            }
-        });
-    </script>
+        .property-card h3 {
+            margin-top: 0;
+        }
+
+        .btn-rent, .btn-favorite, .btn-chat {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-favorite.favorited {
+            color: gold;
+        }
+
+        .rented-status {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
 </body>
 </html>
