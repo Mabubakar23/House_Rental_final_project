@@ -48,7 +48,7 @@ function renderProperties(properties) {
     const propertiesContainer = document.getElementById("properties-container");
     propertiesContainer.innerHTML = ""; // Clear the container
 
-    properties.forEach((property) => {
+    properties.forEach((property, index) => {
         const propertyCard = document.createElement("div");
         propertyCard.classList.add("property-card");
 
@@ -65,10 +65,17 @@ function renderProperties(properties) {
             ${isRented 
                 ? `<p class="rented-status">Already Rented</p>` 
                 : `<div>
-                    <label for="rent-date-${property.id}">Select a Date:</label>
-                    <input type="date" id="rent-date-${property.id}" class="rent-date" />
+
+                    <div class="calendar-container" id="calendar-${index}">
+                        <label for="flatpickr-${index}" class="calendar-label">Select Dates:</label>
+                        <input type="text" id="flatpickr-${index}" class="flatpickr">
+                        <div class="selected-dates">
+                            <span><strong>Start:</strong> <span id="start-date-${index}">None</span></span>
+                            <span><strong>End:</strong> <span id="end-date-${index}">None</span></span>
+                        </div>
+                    </div>                  
                     <button class="btn-rent" data-id="${property.id}">Rent Now</button>
-                </div>`
+                  </div>`
             }
             <button class="btn-favorite" data-id="${property.id}">
                 ${isFavorited ? "★ Favorited" : "♥ Favorite"}
@@ -77,6 +84,18 @@ function renderProperties(properties) {
         `;
 
         propertiesContainer.appendChild(propertyCard);
+        // Initialize Flatpickr
+        flatpickr(`#flatpickr-${index}`, {
+            mode: "range",
+            onChange: function(selectedDates) {
+                if (selectedDates.length === 2) {
+                    const [startDate, endDate] = selectedDates;
+                    document.getElementById(`start-date-${index}`).innerText = startDate.toLocaleDateString();
+                    document.getElementById(`end-date-${index}`).innerText = endDate.toLocaleDateString();
+                }
+            },
+        });  
+        
     });
 
     // Add event listeners

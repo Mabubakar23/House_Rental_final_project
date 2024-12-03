@@ -1,11 +1,10 @@
-//user-portal.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="../css/user-portal-styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <header>
@@ -26,6 +25,8 @@
         <div id="properties-container">
             <!-- Property listings will be dynamically loaded here -->
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     </main>
     <footer>
         <p>&copy; 2024 Residential Rentals. All Rights Reserved.</p>
@@ -37,54 +38,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
 
     <!-- Custom Scripts -->
-    <script type="module" src="../js/user-portal.js"></script>
+    <script type="module" src="/js/user-portal.js"></script>
 
-    <style>
-        #search-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        #search-bar {
-            width: 300px;
-            padding: 10px;
-            font-size: 16px;
-            margin-right: 10px;
-        }
-
-        #search-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .property-card {
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
-
-        .property-card h3 {
-            margin-top: 0;
-        }
-
-        .btn-rent, .btn-favorite, .btn-chat {
-            margin: 5px;
-            padding: 10px 15px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .btn-favorite.favorited {
-            color: gold;
-        }
-
-        .rented-status {
-            color: red;
-            font-weight: bold;
-        }
-    </style>
 </body>
 </html>
