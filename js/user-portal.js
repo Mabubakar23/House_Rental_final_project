@@ -8,7 +8,8 @@ import {
     updateDoc,
     doc,
     arrayUnion,
-    arrayRemove
+    arrayRemove,
+    getDoc // Ensure getDoc is imported
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 // Firebase configuration
@@ -106,35 +107,43 @@ function renderProperties(properties) {
 
 // Function to handle property renting
 async function rentProperty(propertyId, selectedDate) {
+    console.log("Checkpoint1")
     if (!selectedDate) {
         alert("Please select a date to rent the property.");
         return;
     }
 
     const user = auth.currentUser;
-
+    console.log("Checkpoint2")
     if (!user) {
         alert("You need to sign in to rent a property.");
         return;
     }
-
+    console.log("checkpoint3")
     try {
         const propertyDocRef = doc(db, "properties", propertyId);
-        const propertySnap = await getDocs(propertyDocRef);
+        if (!propertyDocRef)
+            console.log("doesn't exist")
+        else 
+            console.log(propertyDocRef)
+        console.log("Checkpoint3.1")
+        const propertySnap = await getDoc(propertyDocRef);
+        console.log("Checkpoint3.2")
         const propertyData = propertySnap.data();
-
+        console.log("Checkpoint4")
         if (propertyData.bookedDates?.includes(selectedDate)) {
             alert("The selected date is already booked. Please choose another date.");
             return;
         }
-
+        console.log("Checkpoint5")
         // Update Firestore with the booked date
         await updateDoc(propertyDocRef, {
             bookedDates: arrayUnion(selectedDate),
         });
-
+        console.log("Checkpoint6")
         alert(`Property rented successfully for ${selectedDate}!`);
         fetchAndRenderProperties(); // Re-render properties after renting
+        console.log("Checkpoint7");
     } catch (error) {
         console.error("Error renting property:", error.message);
         alert("Failed to rent the property. Try again later.");
