@@ -12,21 +12,28 @@
             <ul>
                 <li><a href="../index.html">Home</a></li>
                 <li><a href="#" id="logout">Log Out</a></li>
-                <li><a href="support.html">Support</a></li>
+                <li><a href="../html/favorites.html">Favorites</a></li>
+                <li><a href="../html/support.html">Support</a></li>
             </ul>
         </nav>
     </header>
     <main>
         <h1>Available Properties</h1>
+
+        <!-- Search Bar -->
         <div id="search-container">
-            <input type="text" id="search-bar" placeholder="Search by location, price, or rooms..." />
+            <input 
+                type="text" 
+                id="search-bar" 
+                placeholder="Search properties by title, location, price, or rooms...">
             <button id="search-button">Search</button>
         </div>
+
+        <!-- Properties Section -->
         <div id="properties-container">
-            <!-- Property listings will be dynamically loaded here -->
+            <!-- Properties will be dynamically rendered here -->
         </div>
     </main>
-
     <footer>
         <p>&copy; 2024 Residential Rentals. All Rights Reserved.</p>
     </footer>
@@ -37,160 +44,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
 
     <!-- Custom Scripts -->
-    <script type="module">
-        import { fetchProperties, logOut } from '../js/app.js';
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            const propertiesContainer = document.getElementById('properties-container');
-            const searchBar = document.getElementById('search-bar');
-            const searchButton = document.getElementById('search-button');
-
-            let properties = await fetchProperties();
-
-            // Function to render properties
-            function renderProperties(filteredProperties) {
-                propertiesContainer.innerHTML = ''; // Clear current properties
-                filteredProperties.forEach((property) => {
-                    const propertyCard = document.createElement('div');
-                    propertyCard.classList.add('property-card');
-
-                    propertyCard.innerHTML = `
-                        <h3>${property.title}</h3>
-                        <p>${property.description}</p>
-                        <p><strong>Price:</strong> $${property.price} per night</p>
-                        <p><strong>Location:</strong> ${property.location}</p>
-                        <p><strong>Rooms:</strong> ${property.rooms}</p>
-                        <p><strong>Bathrooms:</strong> ${property.bathrooms}</p>
-                        <button class="btn-start-negotiation" data-id="${property.id}" data-title="${property.title}">Start Negotiation</button>
-                        <button class="btn-favorite" data-id="${property.id}">&hearts; Favorite</button>
-                    `;
-
-                    propertiesContainer.appendChild(propertyCard);
-                });
-
-                addEventListeners();
-            }
-
-            // Initial render
-            renderProperties(properties);
-
-            // Search functionality
-            searchButton.addEventListener('click', () => {
-                const query = searchBar.value.toLowerCase();
-                const filteredProperties = properties.filter((property) => {
-                    return (
-                        property.location.toLowerCase().includes(query) ||
-                        property.price.toString().includes(query) ||
-                        property.rooms.toString().includes(query)
-                    );
-                });
-                renderProperties(filteredProperties);
-            });
-
-            // Add event listeners to property actions
-            function addEventListeners() {
-                const negotiationButtons = document.querySelectorAll('.btn-start-negotiation');
-                const favoriteButtons = document.querySelectorAll('.btn-favorite');
-
-                negotiationButtons.forEach((button) => {
-                    button.addEventListener('click', (e) => {
-                        const propertyId = e.target.getAttribute('data-id');
-                        const propertyTitle = e.target.getAttribute('data-title');
-                        openLiveChat(propertyId, propertyTitle); // Open chat with unique channel
-                    });
-                });
-
-                favoriteButtons.forEach((button) => {
-                    button.addEventListener('click', (e) => {
-                        const propertyId = e.target.getAttribute('data-id');
-                        toggleFavorite(propertyId, e.target);
-                    });
-                });
-            }
-
-            // Function to open live chat with a unique channel for each property
-            async function openLiveChat(propertyId, propertyTitle) {
-                const apiUrl = `https://www.cbox.ws/apis/threads.php?id=3-3542476-e7grMY&key=7cdc0daf6d524bd409cd70d7bdba3979&act=mkthread`;
-
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: new URLSearchParams({
-                            'title': propertyTitle // Only send title
-                        })
-                    });
-
-                    const data = await response.json(); // Parse the response as JSON
-
-                    // Log the entire response for debugging
-                    console.log('API Response:', data);
-
-                    if (data.success) {
-                        // Get the channel URL from the API response
-                        const channelUrl = data.url;
-
-                        // Log the generated channel URL for debugging
-                        console.log('Generated Channel URL:', channelUrl);
-
-                        // Check if the URL is valid
-                        if (!channelUrl || channelUrl.includes("error")) {
-                            console.error('Error: Invalid or incomplete channel URL returned');
-                            alert('Failed to generate valid chat channel.');
-                            return;
-                        }
-
-                        // Calculate position to center the window
-                        const width = 500;
-                        const height = 600;
-                        const left = (window.innerWidth / 2) - (width / 2);
-                        const top = (window.innerHeight / 2) - (height / 2);
-
-                        // Try to open the chat window
-                        const chatWindow = window.open(
-                            channelUrl, // Use the dynamic URL returned by the API
-                            '_blank', // Open in a new tab
-                            `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`
-                        );
-
-                        // Check if the window was successfully opened
-                        if (chatWindow) {
-                            chatWindow.document.title = `Negotiation - ${propertyTitle}`;
-                        } else {
-                            alert("Failed to open the chat window. Please allow pop-ups.");
-                        }
-                    } else {
-                        // If the API response is unsuccessful, log the error message
-                        console.error('Error creating thread:', data.message || 'Unknown error');
-                        alert('Failed to create a negotiation chat. Please try again.');
-                    }
-                } catch (error) {
-                    // Catch any other errors and log them
-                    console.error('Error occurred while creating chat thread:', error);
-                    alert('An error occurred while creating the negotiation chat.');
-                }
-            }
-
-            // Toggle favorite status
-            function toggleFavorite(propertyId, button) {
-                if (button.classList.contains('favorited')) {
-                    button.classList.remove('favorited');
-                    button.textContent = '♥ Favorite';
-                    alert('Removed from favorites');
-                } else {
-                    button.classList.add('favorited');
-                    button.textContent = '★ Favorited';
-                    alert('Added to favorites');
-                }
-            }
-        });
-
-        // Log out functionality
-        document.getElementById('logout').addEventListener('click', () => {
-            logOut();
-        });
-    </script>
+    <script type="module" src="../js/app.js"></script>
 </body>
 </html>

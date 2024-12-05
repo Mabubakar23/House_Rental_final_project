@@ -1,3 +1,4 @@
+//propertyService.js
 import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, limit, startAfter } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 const db = getFirestore();
@@ -33,3 +34,5 @@ export async function fetchProperties(filters = {}, pageSize = 10, lastDoc = nul
         alert("Error fetching properties: " + error.message);
     }
 }
+
+

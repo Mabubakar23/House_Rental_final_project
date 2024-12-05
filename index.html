@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentals - Home</title>
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="./css/styles.css">
-    <link rel="stylesheet" href="./css/index-styles.css">
-    <link rel="stylesheet" href="./css/theme.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/index-styles.css">
+    <link rel="stylesheet" href="/css/theme.css">
 </head>
 <body>
     <header>
         <nav>
             <ul>
                 <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="html/signin.html">Sign In</a></li>
-                <li><a href="html/signup.html">Sign Up</a></li>
-                <li><a href="html/profile.html">Profile</a></li>
-                <li><a href="html/support.html">Support</a></li>
+                <li><a href="/html/signin.html">Sign In</a></li>
+                <li><a href="/html/signup.html">Sign Up</a></li>
+                <li><a href="/html/profile.html">Profile</a></li>
+                <li><a href="/html/support.html">Support</a></li>
                 <li><button id="theme-toggle">Toggle Theme</button></li>
             </ul>
         </nav>
@@ -38,23 +38,23 @@
             <ul class="features-list">
                 <li>
                     <div class="icon">
-                        <img src="images/unique-home.jpg" alt="Unique Homes">
+                        <img src="unique-home.jpg" alt="Unique Homes">
                         <h3>Unique Homes</h3>
                         <p>From cozy apartments to luxurious villas.</p>
                     </div>
                 </li>
                 <li>
                     <div class="icon">
-                        <img src="images/local_culture.jpg" alt="Local Experiences">
+                        <img src="local_culture.jpg" alt="Local Experiences">
                         <h3>Local Experiences</h3>
                         <p>Immerse yourself in vibrant neighborhoods.</p>
                     </div>
                 </li>
                 <li>
                     <div class="icon">
-                        <img src="images/options.jpg" alt="Flexible Options">
+                        <img src="options.jpg" alt="Flexible Options">
                         <h3>Flexible Options</h3>
-                        <p>Tailored for individuals, families, and groups fair needs.</p>
+                        <p>Tailored for individuals, families, and groups with diverse needs.</p>
                     </div>
                 </li>
             </ul>
@@ -63,7 +63,7 @@
         <!-- Call to Action Section -->
         <section class="call-to-action">
             <h2>Ready to Start Your Journey?</h2>
-            <button onclick="window.location.href='html/signup.html'" class="btn-primary">Sign Up Today</button>
+            <button onclick="window.location.href='/html/signup.html'" class="btn-primary">Sign Up Today</button>
         </section>
     </main>
     <footer>
@@ -75,8 +75,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
 
     <!-- Custom Scripts -->
-    <script type="module" src="js/theme.js"></script>
-    <script type="module" src="js/authService.js"></script>
+    <script type="module" src="/js/theme.js"></script>
     <script>
         // Initialize the theme toggle button
         document.getElementById('theme-toggle').addEventListener('click', () => {

@@ -1,0 +1,96 @@
+//host-properties
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Properties</title>
+    <link rel="stylesheet" href="/css/host-properties.css">
+
+</head>
+<body>
+    <header>
+        <!-- Navigation bar -->
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="owner-portal.html">Add Property</a></li>
+                <li><a href="#" id="logout">Log Out</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>My Uploaded Properties</h1>
+        <div id="properties-container">
+            <!-- Properties will be dynamically loaded here -->
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Residential Rentals. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+
+    <!-- Custom Scripts -->
+    <script type="module">
+        import { fetchHostProperties, deleteProperty, logOut } from '../js/app.js';
+        import { auth } from "../js/app.js";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const propertiesContainer = document.getElementById('properties-container');
+
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    try {
+                        const properties = await fetchHostProperties();
+                        if (properties.length === 0) {
+                            propertiesContainer.innerHTML = '<p>No properties found.</p>';
+                        } else {
+                            properties.forEach((property) => {
+                                const propertyCard = document.createElement('div');
+                                propertyCard.classList.add('property-card');
+
+                                propertyCard.innerHTML = `
+                                    <h3>${property.title}</h3>
+                                    <p>${property.description}</p>
+                                    <p><strong>Price:</strong> $${property.price} per night</p>
+                                    <p><strong>Location:</strong> ${property.location}</p>
+                                    <p><strong>Rooms:</strong> ${property.rooms}</p>
+                                    <p><strong>Bathrooms:</strong> ${property.bathrooms}</p>
+                                    <button class="btn-delete" data-id="${property.id}">Delete</button>
+                                `;
+
+                                propertiesContainer.appendChild(propertyCard);
+
+                                // Add event listener for delete button
+                                const deleteButton = propertyCard.querySelector('.btn-delete');
+                                deleteButton.addEventListener('click', async () => {
+                                    const confirmed = confirm(`Are you sure you want to delete "${property.title}"?`);
+                                    if (confirmed) {
+                                        await deleteProperty(property.id);
+                                        propertyCard.remove();
+                                    }
+                                });
+                            });
+                        }
+                    } catch (error) {
+                        console.error("Error loading properties:", error);
+                        propertiesContainer.innerHTML = `<p>Error loading properties: ${error.message}</p>`;
+                    }
+                } else {
+                    alert("You must be logged in to view your properties.");
+                    window.location.href = "signin.html"; // Redirect to the sign-in page
+                }
+            });
+        });
+
+        // Log out functionality
+        document.getElementById('logout').addEventListener('click', () => {
+            logOut();
+        });
+    </script>
+</body>
+</html>

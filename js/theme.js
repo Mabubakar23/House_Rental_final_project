@@ -1,3 +1,4 @@
+//theme.js
 // Add event listener to the theme toggle button
 document.getElementById("theme-toggle").addEventListener("click", () => {
     // Toggle the dark-mode class on the body
