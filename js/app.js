@@ -30,6 +30,7 @@ const firebaseConfig = {
     messagingSenderId: "38104073059",
     appId: "1:38104073059:web:19f5fe83b6601f29474956",
     measurementId: "G-54J13NNWH7"
+    
 };
 
 // Initialize Firebase
@@ -114,6 +115,7 @@ export async function addPropertyListing(title, description, price, location, ro
         bathrooms,
         hostId: user.uid,
         timestamp: new Date()
+        
     });
 }
 
