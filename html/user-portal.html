@@ -3,36 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Portal</title>
+    <title>User Dashboard</title>
     <link rel="stylesheet" href="../css/user-portal.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/theme.css">
+
+
 </head>
 <body>
     <header>
         <nav>
             <ul>
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="#" id="logout">Log Out</a></li>
-                <li><a href="../html/favorites.html">Favorites</a></li>
-                <li><a href="../html/support.html">Support</a></li>
+                <li><a href="../index.html">logout</a></li>
+                <li><a href="favorites.html">My Favorites</a></li>
+                <li><a href="signup.html">Owner Account</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="support.html">Support</a></li>
+                <button id="theme-toggle">Switch to Dark Mode</button>
             </ul>
         </nav>
+        
+
     </header>
     <main>
         <h1>Available Properties</h1>
-
-        <!-- Search Bar -->
         <div id="search-container">
-            <input 
-                type="text" 
-                id="search-bar" 
-                placeholder="Search properties by title, location, price, or rooms...">
+            <input type="text" id="search-bar" placeholder="Search by location, price, or rooms..." />
             <button id="search-button">Search</button>
         </div>
-
-        <!-- Properties Section -->
         <div id="properties-container">
-            <!-- Properties will be dynamically rendered here -->
+            <!-- Property listings will be dynamically loaded here -->
         </div>
+
+        <!-- New refrenced scripts and styles for new Images feature Possibly -->
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     </main>
     <footer>
         <p>&copy; 2024 Residential Rentals. All Rights Reserved.</p>
@@ -44,6 +50,27 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
 
     <!-- Custom Scripts -->
+    <script type="module" src="../js/user-portal.js"></script>
     <script type="module" src="../js/app.js"></script>
+    <script type="module" src="../js/chat.js"></script>
+    <script type="module" src="../js/favorites.js"></script>
+    <script type="module" src="../js/theme.js"></script>
+
+
+    <script>
+        // Search functionality
+        searchButton.addEventListener('click', () => {
+                const query = searchBar.value.toLowerCase();
+                const filteredProperties = properties.filter((property) => {
+                    return (
+                        property.location.toLowerCase().includes(query) ||
+                        property.price.toString().includes(query) ||
+                        property.rooms.toString().includes(query)
+                    );
+                });
+                renderProperties(filteredProperties);
+            });
+    </script>
+
 </body>
 </html>

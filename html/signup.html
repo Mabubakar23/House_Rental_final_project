@@ -1,20 +1,22 @@
-signup.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="../css/signup-styles.css">
+    <link rel="stylesheet" href="../css/signup.css">
     <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/theme.css">
+
 </head>
 <body>
     <header>
         <nav>
             <ul>
                 <li><a href="../index.html">Home</a></li>
-                <li><a href="signin.html">Sign In</a></li>
+                <li><a href="signin.html">Login</a></li>
                 <li><a href="support.html">Support</a></li>
+                <button id="theme-toggle">Switch to Dark Mode</button>
             </ul>
         </nav>
     </header>
@@ -62,5 +64,8 @@ signup.html
             signUp(email, password, role);
         });
     </script>
+
+    <script type="module" src="../js/theme.js"></script>
+
 </body>
 </html>

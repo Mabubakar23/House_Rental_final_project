@@ -1,90 +1,146 @@
-/* Light Theme (Default) */
-:root {
-    --background-color: #f9f9f9;
-    --text-color: #969da5;
-    --header-footer-background: #0e5381;
-    --header-footer-text-color: white;
-    --primary-color: #3498db;
-    --primary-hover-color: #2f6d9c;
+/* 
+   Default Theme Variables
+    */
+   :root {
+    --background-color: #ffffff;
+    --text-color: #1f1f1f;
+    --card-background-color: #f9f9f9;
     --border-color: #dddddd;
-    --card-background-color: #ffffff;
-    --button-background-color: #3498db;
-    --button-hover-color: #416e91;
+    --primary-color: #2980b9;
+    --primary-hover-color: #084298;
+    --text-muted-color: #6c757d;
 }
 
-/* Dark Theme */
-body.dark-theme {
-    --background-color: #2e2f2e;
+/*  Dark Theme Variables*/
+.dark-mode {
+    --background-color: #2d2d2d;
     --text-color: #f1f1f1;
-    --header-footer-background: #2f312f;
-    --header-footer-text-color: #f9f9f9;
-    --primary-color: #235707;
-    --primary-hover-color: #266c0a;
-    --border-color: #393b3a;
-    --card-background-color: #292929;
-    --button-background-color: #045402;
-    --button-hover-color: #26540c;
+    --card-background-color: #2c2c2c;
+    --border-color: #444444;
+    --primary-color: #556B2F;
+    --primary-hover-color: #066b12; 
+    --text-muted-color: #a0a0a0;
 }
 
-/* Apply Theme Variables */
+/* 
+   Global Styles */
 body {
     background-color: var(--background-color);
     color: var(--text-color);
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-header, footer {
-    background-color: var(--header-footer-background);
-    color: var(--header-footer-text-color);
-}
-
-header nav ul li a {
-    color: var(--header-footer-text-color);
-}
-
-header nav ul li a:hover,
-header nav ul li a.active {
-    background-color: var(--primary-hover-color);
-}
-
-button {
-    background-color: var(--button-background-color);
-    color: var(--header-footer-text-color);
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-}
-
-button:hover {
-    background-color: var(--button-hover-color);
-}
-
-.form-container, .property-form, .profile-section, .support-section, .features-list li {
-    background-color: var(--card-background-color);
-    border: 1px solid var(--border-color);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.features-list li:hover {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* Links */
 a {
     color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
 }
 
 a:hover {
     color: var(--primary-hover-color);
 }
 
-/* Footer Links */
-footer a {
-    color: var(--header-footer-text-color);
+/* 
+   Button Styling
+    */
+button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
 }
 
-footer a:hover {
-    color: var(--primary-color);
+button:hover {
+    background-color: var(--primary-hover-color);
 }
+
+/* 
+   Card Styling
+    */
+.card {
+    background-color: var(--card-background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* =======================
+   Table Styling
+   ======================= */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: var(--card-background-color);
+}
+
+table th, table td {
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    text-align: left;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+table th {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+table tr:nth-child(even) {
+    background-color: var(--background-color);
+}
+
+/* 
+   Input and Form Styling
+    */
+input, textarea, select {
+    background-color: var(--card-background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* 
+   Responsive Design
+    */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    table {
+        font-size: 12px;
+    }
+}
+
+
+
+
+
+

@@ -1,0 +1,163 @@
+/* =======================
+   General Styling
+   ======================= */
+   body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+h1, h2 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* =======================
+   Profile Container
+   ======================= */
+#profile-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: var(--card-background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* =======================
+   User Information Section
+   ======================= */
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-info img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.user-info h3 {
+    margin: 0;
+    font-size: 20px;
+    color: var(--primary-color);
+}
+
+.user-info p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* =======================
+   Edit Profile Form
+   ======================= */
+#edit-profile-form {
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#edit-profile-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: var(--primary-color);
+}
+
+#edit-profile-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+#edit-profile-form button {
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+#edit-profile-form button:hover {
+    background-color: var(--primary-hover-color);
+}
+
+/* =======================
+   Profile Actions
+   ======================= */
+.profile-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.profile-actions button {
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.profile-actions .btn-save {
+    background-color: var(--primary-color);
+}
+
+.profile-actions .btn-save:hover {
+    background-color: var(--primary-hover-color);
+}
+
+.profile-actions .btn-delete {
+    background-color: #e63946;
+}
+
+.profile-actions .btn-delete:hover {
+    background-color: #c62828;
+}
+
+/* =======================
+   Responsive Design
+   ======================= */
+@media (max-width: 768px) {
+    #profile-container {
+        padding: 15px;
+    }
+
+    .profile-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .profile-actions button {
+        width: 100%;
+    }
+
+    #edit-profile-form input {
+        font-size: 12px;
+    }
+}
+

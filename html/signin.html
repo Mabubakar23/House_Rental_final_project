@@ -1,12 +1,13 @@
-//sigin.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In</title>
-    <link rel="stylesheet" href="../css/signin-styles.css">
+    <link rel="stylesheet" href="../css/signin.css">
     <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/theme.css">
+
 </head>
 <body>
     <header>
@@ -15,6 +16,7 @@
                 <li><a href="../index.html">Home</a></li>
                 <li><a href="signup.html">Sign Up</a></li>
                 <li><a href="support.html">Support</a></li>
+                <button id="theme-toggle">Switch to Dark Mode</button>
             </ul>
         </nav>
     </header>
@@ -54,5 +56,9 @@
             signIn(email, password);
         });
     </script>
+
+    <script type="module" src="../js/theme.js"></script>
+
+
 </body>
 </html>

@@ -1,6 +1,8 @@
-//owner-portal.js
-import { addPropertyListing, logOut } from '../js/app.js';
+import { addPropertyListing, logOut } from './app.js';
 
+/* =======================
+   DOM Event Listeners
+   ======================= */
 document.addEventListener('DOMContentLoaded', () => {
     const propertyFormsContainer = document.getElementById('property-forms-container');
     const addPropertyFormButton = document.getElementById('add-property-form');
@@ -49,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Add listener for default form
+    // Add listener for the default form
     const defaultForm = document.querySelector('.property-form');
     addRemoveListener(defaultForm);
 
@@ -58,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const forms = document.querySelectorAll('.property-form');
         const propertyData = [];
 
+        // Collect data from each form
         forms.forEach((form) => {
             const title = form.querySelector('input[name="title"]').value;
             const description = form.querySelector('textarea[name="description"]').value;
@@ -70,19 +73,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         try {
-            // Submit properties in batch
+            // Submit each property to Firestore
             for (const property of propertyData) {
                 await addPropertyListing(
-                    property.title, 
-                    property.description, 
-                    property.price, 
-                    property.location, 
-                    property.rooms, 
+                    property.title,
+                    property.description,
+                    property.price,
+                    property.location,
+                    property.rooms,
                     property.bathrooms
                 );
             }
             alert('All properties listed successfully!');
-            propertyFormsContainer.innerHTML = ''; // Clear forms
+            propertyFormsContainer.innerHTML = ''; // Clear all forms
             addPropertyFormButton.click(); // Add one default form back
         } catch (error) {
             alert('Error submitting properties: ' + error.message);

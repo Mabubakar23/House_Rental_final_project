@@ -1,11 +1,14 @@
-//host-properties
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Properties</title>
-    <link rel="stylesheet" href="/css/host-properties.css">
+    <link rel="stylesheet" href="../css/host-properties.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/theme.css">
+
+
 
 </head>
 <body>
@@ -13,9 +16,12 @@
         <!-- Navigation bar -->
         <nav>
             <ul>
-                <li><a href="../index.html">Home</a></li>
                 <li><a href="owner-portal.html">Add Property</a></li>
-                <li><a href="#" id="logout">Log Out</a></li>
+                <li><a href="signup.html">User Account</a></li>
+                <li><a href="../index.html">Logout</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="support.html">Support</a></li>
+                <button id="theme-toggle">Switch to Dark Mode</button>
             </ul>
         </nav>
     </header>
@@ -82,7 +88,7 @@
                     }
                 } else {
                     alert("You must be logged in to view your properties.");
-                    window.location.href = "signin.html"; // Redirect to the sign-in page
+                    window.location.href = "../html/signin.html"; // Redirect to the sign-in page
                 }
             });
         });
@@ -91,6 +97,41 @@
         document.getElementById('logout').addEventListener('click', () => {
             logOut();
         });
+
+
+
+
+
+
+        // Function to start negotiation chat
+        function startNegotiationChat(propertyTitle) {
+            const chatWindow = window.open(
+                "https://www3.cbox.ws/box/?boxid=3542476&boxtag=e7grMY",
+                "_blank",
+                "width=500,height=600,scrollbars=yes,resizable=yes"
+            );
+            chatWindow.document.title = `Negotiation - ${propertyTitle}`;
+        }
+
     </script>
+
+    <!-- Custom Script -->
+    <script type="module" src="../js/app.js"></script>
+    <script type="module" src="../js/chat.js"></script>
+    <script type="module" src="../js/theme.js"></script>
+    <script type="module" src="../js/user-portal.js"></script>
+
+    <!-- Cbox live chat button embedded code -->
+
+    <script>
+    window['CboxReady'] = function (Cbox) {
+            Cbox('button', '3-3542476-e7grMY');
+        } 
+    </script>
+    <script src="https://static.cbox.ws/embed/2.js" async></script>
+
+
+
+
 </body>
 </html>

@@ -1,0 +1,124 @@
+/* =======================
+   General Styling
+   ======================= */
+   body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    color: var(--primary-color);
+}
+
+/* =======================
+   Support Page Container
+   ======================= */
+#support-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--card-background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* =======================
+   Form Styling
+   ======================= */
+.support-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.support-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--primary-color);
+}
+
+.support-form input,
+.support-form textarea {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.support-form textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.support-form button {
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.support-form button:hover {
+    background-color: var(--primary-hover-color);
+}
+
+/* =======================
+   Message Display Styling
+   ======================= */
+#support-messages {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.support-message {
+    border-bottom: 1px solid var(--border-color);
+    padding: 10px 0;
+}
+
+.support-message:last-child {
+    border-bottom: none;
+}
+
+.support-message h4 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--primary-color);
+}
+
+.support-message p {
+    margin: 5px 0 0 0;
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+/* =======================
+   Responsive Design
+   ======================= */
+@media (max-width: 768px) {
+    #support-container {
+        padding: 15px;
+    }
+
+    .support-form button {
+        width: 100%;
+    }
+
+    #support-messages {
+        padding: 10px;
+    }
+}

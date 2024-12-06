@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/profile.css">
+
+
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="signin.html">Login</a></li>
+                <li><a href="signup.html">Create Account</a></li>
+                <li><a href="support.html">Support</a></li>
+                <button id="theme-toggle">Switch to Dark Mode</button>
+            </ul>
+        </nav>
+    </header>      
+    <main>
+        <h2>Profile Page</h2>
+        <div class="profile-container">
+  
+            <!-- Profile Information Section -->
+            <form id="profile-form">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="Enter your name" required>
+    
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email" required disabled>
+    
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" placeholder="Enter your phone number">
+    
+                <label for="bio">Bio</label>
+                <textarea id="bio" placeholder="Tell us about yourself"></textarea>
+
+                <!-- Profile Picture Section -->
+                <div class="profile-picture" style="display: flex;">
+                    <img id="profile-img" src="/images/profile-default.svg" alt="Profile Picture" style="width: 40px; height: 40px;">
+                    <input type="file" id="profile-picture-input" accept="image/*" style="margin: 2px; background-color: wheat; width: 50%;">
+                    <button id="upload-picture-btn" >Upload Picture</button>
+                </div>
+
+                <button type="submit" style="margin: 10px auto;">Save Changes</button>
+            </form>
+        </div>
+    </main>
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Residential Rentals. All Rights Reserved.</p>
+    </footer>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js"></script>
+
+    <script type="module">
+        import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+
+        const auth = getAuth();
+        const db = getFirestore();
+        const storage = getStorage();
+
+        const profileImg = document.getElementById('profile-img');
+        const profilePictureInput = document.getElementById('profile-picture-input');
+        const uploadPictureBtn = document.getElementById('upload-picture-btn');
+        const profileForm = document.getElementById('profile-form');
+
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+        const bioInput = document.getElementById('bio');
+
+        // Load user profile
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    nameInput.value = userData.name || '';
+                    emailInput.value = user.email;
+                    phoneInput.value = userData.phone || '';
+                    bioInput.value = userData.bio || '';
+                    if (userData.profilePicture) {
+                        profileImg.src = userData.profilePicture;
+                    }
+                } else {
+                    console.error("No user data found!");
+                }
+            } else {
+                alert('No user is signed in.');
+                window.location.href = 'signin.html'; // Redirect to sign-in page
+            }
+        });
+
+        // Upload profile picture
+        uploadPictureBtn.addEventListener('click', async () => {
+            const file = profilePictureInput.files[0];
+            if (file) {
+                const fileRef = ref(storage, `profile_pictures/${auth.currentUser.uid}`);
+                await uploadBytes(fileRef, file);
+                const downloadURL = await getDownloadURL(fileRef);
+
+                // Update user profile
+                await updateProfile(auth.currentUser, {
+                    photoURL: downloadURL,
+                });
+
+                // Update Firestore
+                await setDoc(doc(db, "users", auth.currentUser.uid), { profilePicture: downloadURL }, { merge: true });
+
+                profileImg.src = downloadURL;
+                alert('Profile picture updated successfully.');
+            } else {
+                alert('Please select a picture to upload.');
+            }
+        });
+
+        // Save profile changes
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = nameInput.value;
+            const phone = phoneInput.value;
+            const bio = bioInput.value;
+
+            // Update Firestore
+            await setDoc(doc(db, "users", auth.currentUser.uid), {
+                name,
+                phone,
+                bio,
+            }, { merge: true });
+
+            alert('Profile updated successfully.');
+        });
+    </script>
+
+    <script type="module" src="../js/app.js"></script>
+    <script type="module" src="../js/theme.js"></script>
+    <script type="module" src="../js/authService.js"></script>
+
+</body>
+</html>

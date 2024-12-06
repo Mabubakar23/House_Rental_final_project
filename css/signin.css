@@ -7,63 +7,61 @@
     padding: 0;
     background-color: var(--background-color);
     color: var(--text-color);
-    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 h1 {
-    text-align: center;
     color: var(--primary-color);
-    margin-bottom: 20px;
+    text-align: center;
 }
 
 /* =======================
-   Favorites Container
+   Sign-In Container
    ======================= */
-#favorites-container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
+#signin-container {
+    width: 100%;
+    max-width: 400px;
     background-color: var(--card-background-color);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+#signin-container h2 {
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    text-align: center;
 }
 
 /* =======================
-   Property Card Styling
+   Form Styling
    ======================= */
-.favorite-card {
-    background-color: var(--card-background-color);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
+#signin-form {
     display: flex;
     flex-direction: column;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
+    gap: 15px;
 }
 
-.favorite-card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+#signin-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
-.favorite-card h3 {
-    margin: 0 0 10px 0;
-    color: var(--primary-color);
-}
-
-.favorite-card p {
-    margin: 5px 0;
+#signin-form input {
+    padding: 10px;
     font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* =======================
-   Remove Button Styling
-   ======================= */
-.btn-remove-favorite {
-    margin-top: 15px;
+#signin-form button {
     padding: 10px 15px;
     font-size: 14px;
     font-weight: bold;
@@ -73,36 +71,39 @@ h1 {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
-    align-self: flex-start;
 }
 
-.btn-remove-favorite:hover {
+#signin-form button:hover {
     background-color: var(--primary-hover-color);
 }
 
 /* =======================
-   No Favorites Message
+   Link Styling
    ======================= */
-.no-favorites {
+#signin-container .links {
+    margin-top: 15px;
     text-align: center;
-    color: var(--text-muted-color);
-    font-size: 16px;
-    margin-top: 20px;
+}
+
+#signin-container .links a {
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+#signin-container .links a:hover {
+    text-decoration: underline;
 }
 
 /* =======================
    Responsive Design
    ======================= */
 @media (max-width: 768px) {
-    #favorites-container {
-        padding: 15px;
+    #signin-container {
+        padding: 20px;
     }
 
-    .favorite-card {
-        padding: 15px;
-    }
-
-    .btn-remove-favorite {
+    #signin-form button {
         width: 100%;
     }
 }

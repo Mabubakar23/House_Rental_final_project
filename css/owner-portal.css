@@ -1,0 +1,119 @@
+/* =======================
+   General Styling
+   ======================= */
+   body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    color: var(--primary-color);
+}
+
+/* =======================
+   Portal Container
+   ======================= */
+#owner-portal-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* =======================
+   Property Form Styling
+   ======================= */
+.property-form {
+    background-color: var(--card-background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.property-form h3 {
+    margin-top: 0;
+    color: var(--primary-color);
+}
+
+.property-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.property-form input,
+.property-form textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.property-form textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+.property-form .btn-remove {
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #e74c3c;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.property-form .btn-remove:hover {
+    background-color: #c0392b;
+}
+
+/* =======================
+   Buttons
+   ======================= */
+#add-property-form,
+#submit-properties {
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    margin: 10px 5px;
+}
+
+#add-property-form:hover,
+#submit-properties:hover {
+    background-color: var(--primary-hover-color);
+}
+
+/* =======================
+   Responsive Design
+   ======================= */
+@media (max-width: 768px) {
+    #owner-portal-container {
+        padding: 15px;
+    }
+
+    .property-form {
+        padding: 15px;
+    }
+
+    #add-property-form,
+    #submit-properties {
+        width: 100%;
+        margin: 10px 0;
+    }
+}
