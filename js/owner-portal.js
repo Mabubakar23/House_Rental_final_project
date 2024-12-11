@@ -1,4 +1,3 @@
-//owner-portal.js
 import { addPropertyListing, logOut } from '../js/app.js';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
 import { app } from '../js/app.js'; // Ensure app is exported from app.js
@@ -30,10 +29,7 @@ async function uploadPropertyImages(files) {
 
             imageURLs.push(downloadURL);
         } catch (error) {
-            // Handle any errors that occur during upload or URL retrieval
             console.error(`Error uploading ${file.name}: ${error.message}`);
-            // You can decide whether to continue uploading remaining files or break
-            // For now, just continue to the next file
         }
     }
 
@@ -74,6 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <label for="bathrooms">Number of Bathrooms</label>
                 <input type="number" name="bathrooms" placeholder="Bathrooms" required>
             </div>
+            <div class="form-group">
+                <label for="images">Upload Images</label>
+                <input type="file" name="images" accept="image/*" multiple>
+            </div>
             <button type="button" class="btn-remove">Remove</button>
         `;
         propertyFormsContainer.appendChild(newForm);
@@ -104,16 +104,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const location = form.querySelector('input[name="location"]').value;
             const rooms = parseInt(form.querySelector('input[name="rooms"]').value, 10);
             const bathrooms = parseInt(form.querySelector('input[name="bathrooms"]').value, 10);
-            // Get image files
             const imageInput = form.querySelector('input[name="images"]');
             const imageFiles = imageInput ? imageInput.files : [];
-
 
             propertyData.push({ title, description, price, location, rooms, bathrooms, imageFiles });
         });
 
         try {
-            // Submit properties in batch
             for (const property of propertyData) {
                 const imageURLs = await uploadPropertyImages(property.imageFiles);
 

@@ -1,4 +1,3 @@
-//index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +29,7 @@
             <p>
                 Discover the flexibility of renting a home with real-time negotiation. Our platform ensures that renters and property owners get the best deals. Whether you're looking for a cozy apartment or a spacious villa, we’ve got you covered.
             </p>
-            <button onclick="window.location.href='html/signup.html'" class="btn-primary">Start Searching</button>
+            <button onclick="window.location.href='signup.html'" class="btn-primary">Start Searching</button>
         </section>
 
         <!-- Features Section -->
@@ -72,11 +71,27 @@
     </footer>
 
     <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
 
     <!-- Custom Scripts -->
     <script type="module" src="js/theme.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJGhK05gIL-hnl_HJubmj16dIuiP0q4JU",
+            authDomain: "residential-rental-hospitality.firebaseapp.com",
+            projectId: "residential-rental-hospitality",
+            storageBucket: "residential-rental-hospitality.firebasestorage.app",
+            messagingSenderId: "716299420732",
+            appId: "1:716299420732:web:2fb4e70235178bb0922f39",
+            measurementId: "G-GGC25RS2EY"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+    </script>
     <script>
         // Initialize the theme toggle button
         document.getElementById('theme-toggle').addEventListener('click', () => {

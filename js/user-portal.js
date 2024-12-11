@@ -9,18 +9,18 @@ import {
     doc,
     arrayUnion,
     arrayRemove,
-    getDoc // Ensure getDoc is imported
+    getDoc
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyA2LC916BFUO-LHC25Gek0y595GxFQA0ds",
-    authDomain: "house-rentals-12c7d.firebaseapp.com",
-    projectId: "house-rentals-12c7d",
-    storageBucket: "house-rentals-12c7d.firebaseapp.com",
-    messagingSenderId: "38104073059",
-    appId: "1:38104073059:web:19f5fe83b6601f29474956",
-    measurementId: "G-54J13NNWH7"
+    apiKey: "AIzaSyDJGhK05gIL-hnl_HJubmj16dIuiP0q4JU",
+    authDomain: "residential-rental-hospitality.firebaseapp.com",
+    projectId: "residential-rental-hospitality",
+    storageBucket: "residential-rental-hospitality.firebasestorage.app",
+    messagingSenderId: "716299420732",
+    appId: "1:716299420732:web:2fb4e70235178bb0922f39",
+    measurementId: "G-GGC25RS2EY"
 };
 
 // Initialize Firebase
@@ -33,14 +33,11 @@ async function fetchProperties() {
     try {
         const q = query(collection(db, "properties"));
         const querySnapshot = await getDocs(q);
-        const properties = querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-        }));
-        return properties;
+        return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     } catch (error) {
         console.error("Error fetching properties:", error.message);
         alert("Failed to load properties. Please try again.");
+        return [];
     }
 }
 
@@ -49,7 +46,7 @@ function renderProperties(properties) {
     const propertiesContainer = document.getElementById("properties-container");
     propertiesContainer.innerHTML = ""; // Clear the container
 
-    properties.forEach((property) => {
+    properties.forEach(property => {
         const propertyCard = document.createElement("div");
         propertyCard.classList.add("property-card");
 
@@ -80,70 +77,40 @@ function renderProperties(properties) {
         propertiesContainer.appendChild(propertyCard);
     });
 
-    // Add event listeners
-    document.querySelectorAll(".btn-rent").forEach((button) => {
-        button.addEventListener("click", (e) => {
-            const propertyId = e.target.dataset.id;
-            const dateInput = document.getElementById(`rent-date-${propertyId}`);
-            const selectedDate = dateInput.value;
-            rentProperty(propertyId, selectedDate);
-        });
-    });
-
-    document.querySelectorAll(".btn-favorite").forEach((button) => {
-        button.addEventListener("click", (e) => {
-            const propertyId = e.target.dataset.id;
-            toggleFavorite(propertyId, button);
-        });
-    });
-
-    document.querySelectorAll(".btn-chat").forEach((button) => {
-        button.addEventListener("click", (e) => {
-            const propertyTitle = e.target.dataset.title;
-            startNegotiationChat(propertyTitle);
-        });
-    });
+    addEventListeners();
 }
 
 // Function to handle property renting
 async function rentProperty(propertyId, selectedDate) {
-    console.log("Checkpoint1")
     if (!selectedDate) {
         alert("Please select a date to rent the property.");
         return;
     }
 
     const user = auth.currentUser;
-    console.log("Checkpoint2")
     if (!user) {
         alert("You need to sign in to rent a property.");
         return;
     }
-    console.log("checkpoint3")
+
     try {
         const propertyDocRef = doc(db, "properties", propertyId);
-        if (!propertyDocRef)
-            console.log("doesn't exist")
-        else 
-            console.log(propertyDocRef)
-        console.log("Checkpoint3.1")
         const propertySnap = await getDoc(propertyDocRef);
-        console.log("Checkpoint3.2")
+
+        if (!propertySnap.exists()) {
+            alert("Property not found.");
+            return;
+        }
+
         const propertyData = propertySnap.data();
-        console.log("Checkpoint4")
         if (propertyData.bookedDates?.includes(selectedDate)) {
             alert("The selected date is already booked. Please choose another date.");
             return;
         }
-        console.log("Checkpoint5")
-        // Update Firestore with the booked date
-        await updateDoc(propertyDocRef, {
-            bookedDates: arrayUnion(selectedDate),
-        });
-        console.log("Checkpoint6")
+
+        await updateDoc(propertyDocRef, { bookedDates: arrayUnion(selectedDate) });
         alert(`Property rented successfully for ${selectedDate}!`);
-        fetchAndRenderProperties(); // Re-render properties after renting
-        console.log("Checkpoint7");
+        fetchAndRenderProperties();
     } catch (error) {
         console.error("Error renting property:", error.message);
         alert("Failed to rent the property. Try again later.");
@@ -164,15 +131,11 @@ async function toggleFavorite(propertyId, button) {
 
     try {
         if (isFavorited) {
-            await updateDoc(propertyDocRef, {
-                favorites: arrayRemove(user.uid),
-            });
+            await updateDoc(propertyDocRef, { favorites: arrayRemove(user.uid) });
             button.textContent = "♥ Favorite";
             alert("Removed from favorites!");
         } else {
-            await updateDoc(propertyDocRef, {
-                favorites: arrayUnion(user.uid),
-            });
+            await updateDoc(propertyDocRef, { favorites: arrayUnion(user.uid) });
             button.textContent = "★ Favorited";
             alert("Added to favorites!");
         }
@@ -192,12 +155,36 @@ function startNegotiationChat(propertyTitle) {
     chatWindow.document.title = `Negotiation - ${propertyTitle}`;
 }
 
+// Add event listeners to property cards
+function addEventListeners() {
+    document.querySelectorAll(".btn-rent").forEach(button => {
+        button.addEventListener("click", e => {
+            const propertyId = e.target.dataset.id;
+            const dateInput = document.getElementById(`rent-date-${propertyId}`);
+            const selectedDate = dateInput.value;
+            rentProperty(propertyId, selectedDate);
+        });
+    });
+
+    document.querySelectorAll(".btn-favorite").forEach(button => {
+        button.addEventListener("click", e => {
+            const propertyId = e.target.dataset.id;
+            toggleFavorite(propertyId, button);
+        });
+    });
+
+    document.querySelectorAll(".btn-chat").forEach(button => {
+        button.addEventListener("click", e => {
+            const propertyTitle = e.target.dataset.title;
+            startNegotiationChat(propertyTitle);
+        });
+    });
+}
+
 // Function to fetch and render properties on page load
 async function fetchAndRenderProperties() {
     const properties = await fetchProperties();
-    if (properties) {
-        renderProperties(properties);
-    }
+    renderProperties(properties);
 }
 
 // Add event listener for page load
