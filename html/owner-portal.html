@@ -46,11 +46,17 @@
                     <label for="bathrooms">Number of Bathrooms</label>
                     <input type="number" name="bathrooms" placeholder="Bathrooms" required>
                 </div>
+                <div class="form-group">
+                    <label for="images">Upload Images</label>
+                    <input type="file" name="images" accept="image/*" multiple required>
+                </div>
                 <button type="button" class="btn-remove">Remove</button>
             </form>
         </div>
         <button id="add-property-form" class="btn-secondary">Add Another Property</button>
         <button id="submit-properties" class="btn-primary">Submit All Properties</button>
+        <button id="logout">Logout</button>
+
 
         <!-- Section to display uploaded properties -->
         <section id="uploaded-properties">

@@ -21,12 +21,16 @@ import {
     where 
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+
+
+
 // Firebase Configuration
 const firebaseConfig = {
     apiKey: "AIzaSyA2LC916BFUO-LHC25Gek0y595GxFQA0ds",
     authDomain: "house-rentals-12c7d.firebaseapp.com",
     projectId: "house-rentals-12c7d",
-    storageBucket: "house-rentals-12c7d.firebasestorage.app",
+    storageBucket: "house-rentals-12c7d.appspot.com",
     messagingSenderId: "38104073059",
     appId: "1:38104073059:web:19f5fe83b6601f29474956",
     measurementId: "G-54J13NNWH7"
@@ -34,9 +38,12 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+
 const db = getFirestore(app);
+const storage = getStorage(app);
+
 
 // Set Persistence
 setPersistence(auth, browserLocalPersistence).catch((error) => {
@@ -102,7 +109,7 @@ export function logOut() {
    ======================= */
 
 // Add Property
-export async function addPropertyListing(title, description, price, location, rooms, bathrooms) {
+export async function addPropertyListing(title, description, price, location, rooms, bathrooms, imageURLs) {
     const user = auth.currentUser;
     if (!user) throw new Error("No user is logged in.");
 
@@ -114,7 +121,8 @@ export async function addPropertyListing(title, description, price, location, ro
         rooms,
         bathrooms,
         hostId: user.uid,
-        timestamp: new Date()
+        timestamp: new Date(),
+        images: imageURLs || [] // store image URLs in Firestore
         
     });
 }
@@ -157,4 +165,5 @@ export async function addSupportMessage(name, email, subject, message) {
     } catch (error) {
         throw new Error("Error saving support message: " + error.message);
     }
+
 }
