@@ -1,7 +1,6 @@
 //owner-portal.js
-import { addPropertyListing, logOut } from '../js/app.js';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
-import { app } from '../js/app.js'; // Ensure app is exported from app.js
+import { app, checkAuthStatus, addPropertyListing, logOut } from '../js/app.js'; // Ensure app is exported from app.js
 
 const storage = getStorage(app);
 

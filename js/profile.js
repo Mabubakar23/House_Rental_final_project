@@ -1,7 +1,7 @@
 import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import { getFirestore, doc, addDoc, getDoc, setDoc, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import {app, checkAuthStatus, logOut} from '/js/app.js';
 
 import { 
     setPersistence, 
@@ -17,20 +17,7 @@ import {
     where 
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-// Firebase Configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyA2LC916BFUO-LHC25Gek0y595GxFQA0ds",
-    authDomain: "house-rentals-12c7d.firebaseapp.com",
-    projectId: "house-rentals-12c7d",
-    storageBucket: "house-rentals-12c7d.appspot.com",
-    messagingSenderId: "38104073059",
-    appId: "1:38104073059:web:19f5fe83b6601f29474956",
-    measurementId: "G-54J13NNWH7"
-    
-};
-
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
