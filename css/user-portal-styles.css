@@ -198,3 +198,19 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+.property-images {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.property-image {
+    max-width: 100px;
+    max-height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+
+

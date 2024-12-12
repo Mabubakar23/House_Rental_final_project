@@ -1,3 +1,4 @@
+//pripertyService.js
 import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, limit, startAfter } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { app } from '../js/app.js'; // Import app to initialize Firestore with the correct config
 

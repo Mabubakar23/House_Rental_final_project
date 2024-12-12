@@ -92,52 +92,56 @@
         import { auth } from "../js/app.js";
 
         document.addEventListener('DOMContentLoaded', () => {
-            const propertiesContainer = document.getElementById('properties-container');
+    const propertiesContainer = document.getElementById('properties-container');
 
-            auth.onAuthStateChanged(async (user) => {
-                if (user) {
-                    try {
-                        const properties = await fetchHostProperties();
-                        if (properties.length === 0) {
-                            propertiesContainer.innerHTML = '<p>No properties found.</p>';
-                        } else {
-                            properties.forEach((property) => {
-                                const propertyCard = document.createElement('div');
-                                propertyCard.classList.add('property-card');
-
-                                propertyCard.innerHTML = `
-                                    <h3>${property.title}</h3>
-                                    <p>${property.description}</p>
-                                    <p><strong>Price:</strong> $${property.price} per night</p>
-                                    <p><strong>Location:</strong> ${property.location}</p>
-                                    <p><strong>Rooms:</strong> ${property.rooms}</p>
-                                    <p><strong>Bathrooms:</strong> ${property.bathrooms}</p>
-                                    <button class="btn-delete" data-id="${property.id}">Delete</button>
-                                `;
-
-                                propertiesContainer.appendChild(propertyCard);
-
-                                // Add event listener for delete button
-                                const deleteButton = propertyCard.querySelector('.btn-delete');
-                                deleteButton.addEventListener('click', async () => {
-                                    const confirmed = confirm(`Are you sure you want to delete "${property.title}"?`);
-                                    if (confirmed) {
-                                        await deleteProperty(property.id);
-                                        propertyCard.remove();
-                                    }
-                                });
-                            });
-                        }
-                    } catch (error) {
-                        console.error("Error loading properties:", error);
-                        propertiesContainer.innerHTML = `<p>Error loading properties: ${error.message}</p>`;
-                    }
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            try {
+                const properties = await fetchHostProperties();
+                if (properties.length === 0) {
+                    propertiesContainer.innerHTML = '<p>No properties found.</p>';
                 } else {
-                    alert("You must be logged in to view your properties.");
-                    window.location.href = "../html/signin.html"; // Redirect to the sign-in page
+                    properties.forEach((property) => {
+                        const propertyCard = document.createElement('div');
+                        propertyCard.classList.add('property-card');
+
+                        // Generate image HTML
+                        const imageHTML = property.images?.map(imageURL => `<img src="${imageURL}" alt="Property Image" class="property-image">`).join('') || '<p>No images available</p>';
+
+                        propertyCard.innerHTML = `
+                            <div class="property-images">${imageHTML}</div>
+                            <h3>${property.title}</h3>
+                            <p>${property.description}</p>
+                            <p><strong>Price:</strong> $${property.price} per night</p>
+                            <p><strong>Location:</strong> ${property.location}</p>
+                            <p><strong>Rooms:</strong> ${property.rooms}</p>
+                            <p><strong>Bathrooms:</strong> ${property.bathrooms}</p>
+                            <button class="btn-delete" data-id="${property.id}">Delete</button>
+                        `;
+
+                        propertiesContainer.appendChild(propertyCard);
+
+                        // Add event listener for delete button
+                        const deleteButton = propertyCard.querySelector('.btn-delete');
+                        deleteButton.addEventListener('click', async () => {
+                            const confirmed = confirm(`Are you sure you want to delete "${property.title}"?`);
+                            if (confirmed) {
+                                await deleteProperty(property.id);
+                                propertyCard.remove();
+                            }
+                        });
+                    });
                 }
-            });
-        });
+            } catch (error) {
+                console.error("Error loading properties:", error);
+                propertiesContainer.innerHTML = `<p>Error loading properties: ${error.message}</p>`;
+            }
+        } else {
+            alert("You must be logged in to view your properties.");
+            window.location.href = "../html/signin.html"; // Redirect to the sign-in page
+        }
+    });
+});
 
         // Log out functionality
         document.getElementById('logout').addEventListener('click', () => {

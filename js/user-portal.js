@@ -1,3 +1,4 @@
+//User-portal.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import {
@@ -53,7 +54,11 @@ function renderProperties(properties) {
         const isFavorited = property.favorites?.includes(auth.currentUser?.uid);
         const isRented = property.rentedBy;
 
+        // Generate image HTML
+        const imageHTML = property.images?.map(imageURL => `<img src="${imageURL}" alt="Property Image" class="property-image">`).join('') || '<p>No images available</p>';
+
         propertyCard.innerHTML = `
+            <div class="property-images">${imageHTML}</div>
             <h3>${property.title}</h3>
             <p>${property.description}</p>
             <p><strong>Price:</strong> $${property.price} per night</p>
