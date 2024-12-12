@@ -217,8 +217,8 @@ export function checkAuthStatus() {
             const img = document.createElement("img");
             img.src = user.photoURL || '/images/profile-default.svg';
             img.alt = "User Profile";
-            img.style.width = "30px";
-            img.style.height = "30px";
+            img.style.width = "25px";
+            img.style.height = "25px";
             img.style.borderRadius = "50%";
             img.style.cursor = "pointer";
 
