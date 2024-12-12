@@ -17,6 +17,7 @@
                 <li><a href="signup.html">Sign up</a></li>
                 <li><a href="profile.html">Profile</a></li>
                 <li><a href="support.html">Support</a></li>
+                <li><a href="#" id="logout">Log Out</a></li>
             </ul>
         </nav>
     </header>
@@ -82,12 +83,18 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
 
     <!-- Custom Scripts -->
-    <script type="module" src="js/theme.js"></script>
-    <script>
-        // Initialize the theme toggle button
-        document.getElementById('theme-toggle').addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme');
+    <script type="module">
+        import { checkAuthStatus, logOut } from '/js/app.js';
+
+        // Check authentication status on page load
+        checkAuthStatus();
+
+        // Add event listener for Log Out
+        document.getElementById('logout').addEventListener('click', (e) => {
+            e.preventDefault();
+            logOut();
         });
-    </script>    
+    </script>
+
 </body>
 </html>

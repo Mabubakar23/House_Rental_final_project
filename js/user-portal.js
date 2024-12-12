@@ -21,9 +21,10 @@ const firebaseConfig = {
     appId: "1:38104073059:web:19f5fe83b6601f29474956",
     measurementId: "G-54J13NNWH7"
 };
+import {app, checkAuthStatus} from '/js/app.js';
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 

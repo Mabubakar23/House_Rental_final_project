@@ -15,6 +15,7 @@
                 <li><a href="signup.html">Sign up</a></li>
                 <li><a href="profile.html">Profile</a></li>
                 <li><a href="support.html">Support</a></li>
+                <li><a href="#" id="logout">Log Out</a></li>
             </ul>
         </nav>
     </header>      
@@ -36,7 +37,7 @@
 
                 <div class="profile-picture" style="display: flex; align-items: center; gap: 10px;">
                     <img id="profile-img" src="/images/profile-default.svg" alt="Profile Picture" style="width: 80px; height: 80px; border-radius: 50%; border: 1px solid #ccc;">
-                    <input type="file" id="profile-picture-input" accept="image/*">
+                    <input type="file" id="profile-picture-input" name="profile-picture-input" accept="image/*">
                     <button type="button" id="upload-picture-btn">Upload Picture</button>
                 </div>
 
@@ -57,5 +58,18 @@
 
     <!-- Link to External JavaScript File -->
     <script type="module" src="/js/profile.js"></script>
+    <!-- Custom Scripts -->
+    <script type="module">
+        import { checkAuthStatus, logOut } from '/js/app.js';
+
+        // Check authentication status on page load
+        checkAuthStatus();
+
+        // Add event listener for Log Out
+        document.getElementById('logout').addEventListener('click', (e) => {
+            e.preventDefault();
+            logOut();
+        });
+    </script>    
 </body>
 </html>

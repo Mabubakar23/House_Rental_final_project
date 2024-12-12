@@ -1,5 +1,44 @@
 //owner-portal.js
 import { addPropertyListing, logOut } from '../js/app.js';
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+import { app } from '../js/app.js'; // Ensure app is exported from app.js
+
+const storage = getStorage(app);
+
+async function uploadPropertyImages(files) {
+    const imageURLs = [];
+
+    // If no files are provided, simply return an empty array.
+    if (!files || files.length === 0) {
+        console.warn("No files to upload.");
+        return imageURLs;
+    }
+
+    for (const file of files) {
+        try {
+            // Replace spaces in the filename to avoid encoding issues
+            const safeFileName = file.name.replace(/\s+/g, '_');
+            const imageRef = ref(storage, `property-images/${Date.now()}-${safeFileName}`);
+
+            console.log(`Uploading file: ${file.name} to ${imageRef.fullPath}...`);
+            await uploadBytes(imageRef, file);
+            console.log(`File uploaded successfully: ${file.name}`);
+
+            // Retrieve the download URL from Firebase Storage
+            const downloadURL = await getDownloadURL(imageRef);
+            console.log(`Download URL for ${file.name}: ${downloadURL}`);
+
+            imageURLs.push(downloadURL);
+        } catch (error) {
+            // Handle any errors that occur during upload or URL retrieval
+            console.error(`Error uploading ${file.name}: ${error.message}`);
+            // You can decide whether to continue uploading remaining files or break
+            // For now, just continue to the next file
+        }
+    }
+
+    return imageURLs;
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     const propertyFormsContainer = document.getElementById('property-forms-container');
@@ -65,20 +104,27 @@ document.addEventListener('DOMContentLoaded', () => {
             const location = form.querySelector('input[name="location"]').value;
             const rooms = parseInt(form.querySelector('input[name="rooms"]').value, 10);
             const bathrooms = parseInt(form.querySelector('input[name="bathrooms"]').value, 10);
+            // Get image files
+            const imageInput = form.querySelector('input[name="images"]');
+            const imageFiles = imageInput ? imageInput.files : [];
 
-            propertyData.push({ title, description, price, location, rooms, bathrooms });
+
+            propertyData.push({ title, description, price, location, rooms, bathrooms, imageFiles });
         });
 
         try {
             // Submit properties in batch
             for (const property of propertyData) {
+                const imageURLs = await uploadPropertyImages(property.imageFiles);
+
                 await addPropertyListing(
                     property.title, 
                     property.description, 
                     property.price, 
                     property.location, 
                     property.rooms, 
-                    property.bathrooms
+                    property.bathrooms,
+                    imageURLs
                 );
             }
             alert('All properties listed successfully!');

@@ -6,7 +6,8 @@ import {
     browserLocalPersistence, 
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
-    signOut 
+    signOut, 
+    onAuthStateChanged 
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import { 
     getFirestore, 
@@ -20,22 +21,24 @@ import {
     query, 
     where 
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
 
 // Firebase Configuration
 const firebaseConfig = {
     apiKey: "AIzaSyA2LC916BFUO-LHC25Gek0y595GxFQA0ds",
     authDomain: "house-rentals-12c7d.firebaseapp.com",
     projectId: "house-rentals-12c7d",
-    storageBucket: "house-rentals-12c7d.firebasestorage.app",
+    storageBucket: "house-rentals-12c7d.appspot.com",
     messagingSenderId: "38104073059",
     appId: "1:38104073059:web:19f5fe83b6601f29474956",
     measurementId: "G-54J13NNWH7"
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 // Set Persistence
 setPersistence(auth, browserLocalPersistence).catch((error) => {
@@ -101,7 +104,7 @@ export function logOut() {
    ======================= */
 
 // Add Property
-export async function addPropertyListing(title, description, price, location, rooms, bathrooms) {
+export async function addPropertyListing(title, description, price, location, rooms, bathrooms, imageURLs) {
     const user = auth.currentUser;
     if (!user) throw new Error("No user is logged in.");
 
@@ -113,7 +116,8 @@ export async function addPropertyListing(title, description, price, location, ro
         rooms,
         bathrooms,
         hostId: user.uid,
-        timestamp: new Date()
+        timestamp: new Date(),
+        images: imageURLs || [] // store image URLs in Firestore
     });
 }
 
@@ -155,4 +159,59 @@ export async function addSupportMessage(name, email, subject, message) {
     } catch (error) {
         throw new Error("Error saving support message: " + error.message);
     }
+}
+
+// Function to handle UI updates based on user authentication status
+export function checkAuthStatus() {
+    onAuthStateChanged(auth, (user) => {
+        const loginLink = document.querySelector('a[href="signin.html"]');
+        const signupLink = document.querySelector('a[href="signup.html"]');
+        const logoutLink = document.getElementById('logout');
+        const nav = document.querySelector('nav ul');
+
+        // Remove any existing user email or profile picture to avoid duplicates
+        const existingUserEmail = document.getElementById('user-email');
+        const existingUserProfile = document.getElementById('user-profile-pic');
+        if (existingUserEmail) existingUserEmail.remove();
+        if (existingUserProfile) existingUserProfile.remove();
+
+        if (user) {
+            // User is logged in
+            if (loginLink) loginLink.style.display = "none";
+            if (signupLink) signupLink.style.display = "none";
+            if (logoutLink) logoutLink.style.display = "inline";
+
+            // Display user's email as the account ID
+            const userEmail = document.createElement("li");
+            userEmail.textContent = `Account: ${user.email}`;
+            userEmail.id = 'user-email';
+            userEmail.style.marginLeft = "auto";
+            nav.appendChild(userEmail);
+
+            // Display user's profile picture or default profile picture
+            const profilePic = document.createElement("li");
+            profilePic.id = 'user-profile-pic';
+            profilePic.style.marginLeft = "10px";
+
+            const img = document.createElement("img");
+            img.src = user.photoURL || '/images/profile-default.svg';
+            img.alt = "User Profile";
+            img.style.width = "40px";
+            img.style.height = "40px";
+            img.style.borderRadius = "50%";
+            img.style.cursor = "pointer";
+
+            profilePic.appendChild(img);
+            nav.appendChild(profilePic);
+        } else {
+            // User is not logged in
+            if (loginLink) loginLink.style.display = "inline";
+            if (signupLink) signupLink.style.display = "inline";
+            if (logoutLink) logoutLink.style.display = "none";
+
+            // Ensure any existing profile picture is removed
+            const existingProfilePic = document.getElementById('user-profile-pic');
+            if (existingProfilePic) existingProfilePic.remove();
+        }
+    });
 }
