@@ -128,7 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             alert('All properties listed successfully!');
             propertyFormsContainer.innerHTML = ''; // Clear forms
-            addPropertyFormButton.click(); // Add one default form back
+            // addPropertyFormButton.click(); // Add one default form back
+            window.location.href = 'host-properties.html';
         } catch (error) {
             alert('Error submitting properties: ' + error.message);
         }
