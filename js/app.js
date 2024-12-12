@@ -163,10 +163,12 @@ export async function addSupportMessage(name, email, subject, message) {
 
 // Function to handle UI updates based on user authentication status
 export function checkAuthStatus() {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
         const loginLink = document.querySelector('a[href="signin.html"]');
         const signupLink = document.querySelector('a[href="signup.html"]');
         const logoutLink = document.getElementById('logout');
+        const rentalPortalLink = document.querySelector('a[href="user-portal.html"]');
+        const ownerPortalLink = document.querySelector('a[href="host-properties.html"]');
         const nav = document.querySelector('nav ul');
 
         // Remove any existing user email or profile picture to avoid duplicates
@@ -181,6 +183,24 @@ export function checkAuthStatus() {
             if (signupLink) signupLink.style.display = "none";
             if (logoutLink) logoutLink.style.display = "inline";
 
+            // Fetch user role from Firestore
+            try {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+
+                    if (userData.role === "user") {
+                        if (rentalPortalLink) rentalPortalLink.style.display = "inline";
+                        if (ownerPortalLink) ownerPortalLink.style.display = "none";
+                    } else if (userData.role === "owner") {
+                        if (rentalPortalLink) rentalPortalLink.style.display = "none";
+                        if (ownerPortalLink) ownerPortalLink.style.display = "inline";
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching user role:", error);
+            }
+
             // Display user's email as the account ID
             const userEmail = document.createElement("li");
             userEmail.textContent = `Account: ${user.email}`;
@@ -192,12 +212,13 @@ export function checkAuthStatus() {
             const profilePic = document.createElement("li");
             profilePic.id = 'user-profile-pic';
             profilePic.style.marginLeft = "10px";
+            profilePic.style.marginTop = "2px";
 
             const img = document.createElement("img");
             img.src = user.photoURL || '/images/profile-default.svg';
             img.alt = "User Profile";
-            img.style.width = "40px";
-            img.style.height = "40px";
+            img.style.width = "30px";
+            img.style.height = "30px";
             img.style.borderRadius = "50%";
             img.style.cursor = "pointer";
 
@@ -209,9 +230,9 @@ export function checkAuthStatus() {
             if (signupLink) signupLink.style.display = "inline";
             if (logoutLink) logoutLink.style.display = "none";
 
-            // Ensure any existing profile picture is removed
-            const existingProfilePic = document.getElementById('user-profile-pic');
-            if (existingProfilePic) existingProfilePic.remove();
+            // Disable both portals
+            if (rentalPortalLink) rentalPortalLink.style.display = "none";
+            if (ownerPortalLink) ownerPortalLink.style.display = "none";
         }
     });
 }

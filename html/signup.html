@@ -11,11 +11,13 @@
         <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
+                <li><a href="host-properties.html">Owner's Portal</a></li>
+                <li><a href="user-portal.html">Rental Portal</a></li>
                 <li><a href="signin.html">Login</a></li>
                 <li><a href="signup.html">Sign up</a></li>
-                <li><a href="dashboard.html">Rental Portal</a></li>
-                <li><a href="profile.html">Profile Settings</a></li>
+                <li><a href="profile.html">Profile</a></li>
                 <li><a href="support.html">Support</a></li>
+                <li><a href="#" id="logout">Log Out</a></li>
             </ul>
         </nav>
     </header>   
@@ -63,5 +65,18 @@
             signUp(email, password, role);
         });
     </script>
+    <!-- Custom Scripts -->
+    <script type="module">
+        import { checkAuthStatus, logOut } from '/js/app.js';
+
+        // Check authentication status on page load
+        checkAuthStatus();
+
+        // Add event listener for Log Out
+        document.getElementById('logout').addEventListener('click', (e) => {
+            e.preventDefault();
+            logOut();
+        });
+    </script>    
 </body>
 </html>

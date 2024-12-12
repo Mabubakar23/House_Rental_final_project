@@ -80,5 +80,18 @@
 
     <!-- Custom Script -->
     <script type="module" src="../js/owner-portal.js"></script>
+    <!-- Custom Scripts -->
+    <script type="module">
+        import { checkAuthStatus, logOut } from '/js/app.js';
+
+        // Check authentication status on page load
+        checkAuthStatus();
+
+        // Add event listener for Log Out
+        document.getElementById('logout').addEventListener('click', (e) => {
+            e.preventDefault();
+            logOut();
+        });
+    </script>    
 </body>
 </html>
