@@ -49,6 +49,7 @@ function renderProperties(properties) {
         const imageHTML = property.images?.map(imageURL => `<img src="${imageURL}" alt="Property Image" class="property-image">`).join('') || '<p>No images available</p>';
 
         propertyCard.innerHTML = `
+            <div class="property-images" style="width: 40px">${imageHTML}</div>
             <h3>${property.title}</h3>
             <p>${property.description}</p>
             <p><strong>Price:</strong> $${property.price} per night</p>

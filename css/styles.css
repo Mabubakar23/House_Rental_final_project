@@ -528,3 +528,20 @@ select#role {
     display: inline-flex;
     align-items: center;
 }
+
+
+.property-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.property-image {
+    width: 150px; /* Adjust width to a more normal size */
+    height: 100px; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensures the image fits without distortion */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
