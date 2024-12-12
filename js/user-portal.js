@@ -114,6 +114,7 @@ function renderProperties(properties) {
             startNegotiationChat(propertyTitle);
         });
     });
+    addEventListeners();
 }
 
 // Function to handle property renting
@@ -205,3 +206,29 @@ async function fetchAndRenderProperties() {
 
 // Add event listener for page load
 document.addEventListener("DOMContentLoaded", fetchAndRenderProperties);
+
+// Add event listeners to property cards
+function addEventListeners() {
+    document.querySelectorAll(".btn-rent").forEach(button => {
+        button.addEventListener("click", e => {
+            const propertyId = e.target.dataset.id;
+            const dateInput = document.getElementById(`rent-date-${propertyId}`);
+            const selectedDate = dateInput.value;
+            rentProperty(propertyId, selectedDate);
+        });
+    });
+
+    document.querySelectorAll(".btn-favorite").forEach(button => {
+        button.addEventListener("click", e => {
+            const propertyId = e.target.dataset.id;
+            toggleFavorite(propertyId, button);
+        });
+    });
+
+    document.querySelectorAll(".btn-chat").forEach(button => {
+        button.addEventListener("click", e => {
+            const propertyTitle = e.target.dataset.title;
+            startNegotiationChat(propertyTitle);
+        });
+    });
+}
