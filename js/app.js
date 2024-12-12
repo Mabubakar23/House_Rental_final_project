@@ -182,7 +182,7 @@ export function checkAuthStatus() {
             if (loginLink) loginLink.style.display = "none";
             if (signupLink) signupLink.style.display = "none";
             if (logoutLink) logoutLink.style.display = "inline";
-
+            
             // Fetch user role from Firestore
             try {
                 const userDoc = await getDoc(doc(db, "users", user.uid));
@@ -203,7 +203,7 @@ export function checkAuthStatus() {
 
             // Display user's email as the account ID
             const userEmail = document.createElement("li");
-            userEmail.textContent = `Account: ${user.email}`;
+            userEmail.textContent = ` | ${user.email} | `;
             userEmail.id = 'user-email';
             userEmail.style.marginLeft = "auto";
             nav.appendChild(userEmail);
@@ -221,7 +221,8 @@ export function checkAuthStatus() {
             img.style.height = "25px";
             img.style.borderRadius = "50%";
             img.style.cursor = "pointer";
-
+            img.style.verticalAlign = "middle";
+            
             profilePic.appendChild(img);
             nav.appendChild(profilePic);
         } else {
