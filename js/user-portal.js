@@ -63,12 +63,12 @@ function renderProperties(properties) {
                         </div>
                     </div>                  
                     <button class="btn-rent" data-id="${property.id}">Rent Now</button>
-                  </div>`
+                    <button class="btn-favorite" data-id="${property.id}">
+                        ${isFavorited ? "★ Favorited" : "♥ Favorite"}
+                    </button>
+                    <button class="btn-chat" data-title="${property.title}">Start Negotiation</button>
+                    </div>`
             }
-            <button class="btn-favorite" data-id="${property.id}">
-                ${isFavorited ? "★ Favorited" : "♥ Favorite"}
-            </button>
-            <button class="btn-chat" data-title="${property.title}">Start Negotiation</button>
         `;
 
         propertiesContainer.appendChild(propertyCard);
