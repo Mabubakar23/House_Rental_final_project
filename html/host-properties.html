@@ -94,6 +94,16 @@
         document.getElementById('logout').addEventListener('click', () => {
             logOut();
         });
+
+        // Function to start negotiation chat
+        function startNegotiationChat(propertyTitle) {
+            const chatWindow = window.open(
+                "https://my.cbox.ws/LiveRentalChat",
+                "_blank",
+                "width=500,height=600,scrollbars=yes,resizable=yes"
+            );
+            chatWindow.document.title = `Negotiation - ${propertyTitle}`;
+        }        
     </script>
     <!-- Custom Scripts -->
     <script type="module">
@@ -108,5 +118,16 @@
             logOut();
         });
     </script>    
+
+    <!-- Cbox live chat button embedded code -->
+
+    <script>
+        window['CboxReady'] = function (Cbox) {
+                Cbox('button', '3-3542476-e7grMY');
+            } 
+        </script>
+        <script src="https://static.cbox.ws/embed/2.js" async></script>
+    
+    
 </body>
 </html>
