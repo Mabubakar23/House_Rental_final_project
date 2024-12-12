@@ -7,7 +7,8 @@ import {
     updateDoc,
     doc,
     arrayUnion,
-    arrayRemove
+    arrayRemove,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 import {app, checkAuthStatus, logOut} from '/js/app.js';
@@ -28,6 +29,7 @@ async function fetchProperties() {
     } catch (error) {
         console.error("Error fetching properties:", error.message);
         alert("Failed to load properties. Please try again.");
+        return [];
     }
 }
 
@@ -42,6 +44,9 @@ function renderProperties(properties) {
 
         const isFavorited = property.favorites?.includes(auth.currentUser?.uid);
         const isRented = property.rentedBy;
+
+        // Generate image HTML
+        const imageHTML = property.images?.map(imageURL => `<img src="${imageURL}" alt="Property Image" class="property-image">`).join('') || '<p>No images available</p>';
 
         propertyCard.innerHTML = `
             <h3>${property.title}</h3>
