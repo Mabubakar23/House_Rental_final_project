@@ -190,7 +190,7 @@ async function toggleFavorite(propertyId, button) {
 // Function to start negotiation chat
 function startNegotiationChat(propertyTitle) {
     const chatWindow = window.open(
-        "https://www3.cbox.ws/box/?boxid=3542306&boxtag=hsUZEg",
+        "https://my.cbox.ws/LiveRentalChat",
         "_blank",
         "width=500,height=600,scrollbars=yes,resizable=yes"
     );
