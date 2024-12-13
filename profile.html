@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../css/.css">
+    <link rel="stylesheet" href="../css/theme.css">
+	<link rel="stylesheet" href="../css/profile.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="../index.html" class="active">Home</a></li>
+                <li><a href="../profile.html">Profile</a></li>
+                <li><a href="../support.html">Support</a></li>
+                <li><button id="theme-toggle">Toggle Theme</button></li>
+            </ul>
+        </nav>
+    </header>
+	
+	
+	
+
+<div class="container">
+    <section class="profile-info">
+        <img id="profilePicture" alt="User Profile Picture">
+        <div>
+            <h2 id=userName>John Doe</h2>
+            <p><strong>Email:</strong> johndoe@email.com</p>
+            <p><strong>Location:</strong> New York City, NY</p>
+            <p><strong>Age:</strong> 32</p>
+        </div>
+    </section>
+
+
+
+    <section class="housing-preferences">
+        <h2>Housing Preferences</h2>
+        <div class="form-group">
+            <label for="housing-type">Type of Housing:</label>
+            <input type="text" id="housing-type" name="housing-type" value="Shared Room" readonly>
+        </div>
+        <div class="form-group">
+            <label for="preferred-location">Preferred Location:</label>
+            <input type="text" id="preferred-location" name="preferred-location" value="Downtown Area" readonly>
+        </div>
+        <div class="form-group">
+            <label for="budget">Maximum Budget ($):</label>
+            <input type="text" id="budget" name="budget" value="300" readonly>
+        </div>
+    </section>
+
+
+
+    <section class="additional-info">
+        <h2>About Me</h2>
+        <textarea id="aboutme" name="about-me" readonly>Hi, I’m John! I’ve been looking for affordable housing to help me get back on my feet. I’m friendly, quiet, and respectful of others’ space.</textarea>
+    </section>
+ 
+	
+    <button id="editButton" class="btn" onclick="window.location.href=profile.html">Edit Profile</button>
+	<button id="saveButton" class="btn" onclick="window.location.href=profile.html">Save Profile</button>
+</div>
+	
+    <footer>
+        <p>&copy; 2024 Residential Rentals. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+
+
+	<script>
+    const editButton = document.getElementById('editButton');
+    const saveButton = document.getElementById('saveButton');
+    const About_Me = document.getElementById('aboutme');
+	const house_type = document.getElementById('housing-type');
+	const preferred_location = document.getElementById('preferred-location');
+	const max_budget = document.getElementById('budget');
+	
+    // Enable editing
+    editButton.addEventListener('click', () => {
+        About_Me.removeAttribute('readonly');
+        About_Me.focus();
+        editButton.disabled = true;
+        saveButton.disabled = false;
+    });
+
+    // Save changes
+    saveButton.addEventListener('click', () => {
+        About_Me.setAttribute('readonly', true);
+        editButton.disabled = false;
+        saveButton.disabled = true;
+    });
+	
+	
+	
+	
+	
+	    // Enable editing
+    editButton.addEventListener('click', () => {
+        house_type.removeAttribute('readonly');
+        house_type.focus();
+        editButton.disabled = true;
+        saveButton.disabled = false;
+    });
+
+    // Save changes
+    saveButton.addEventListener('click', () => {
+        house_type.setAttribute('readonly', true);
+        editButton.disabled = false;
+        saveButton.disabled = true;
+    });
+	
+	
+	
+		    // Enable editing
+    editButton.addEventListener('click', () => {
+        preferred_location.removeAttribute('readonly');
+        preferred_location.focus();
+        editButton.disabled = true;
+        saveButton.disabled = false;
+    });
+
+    // Save changes
+    saveButton.addEventListener('click', () => {
+        preferred_location.setAttribute('readonly', true);
+        editButton.disabled = false;
+        saveButton.disabled = true;
+    });
+	
+	
+	
+	
+		    // Enable editing
+    editButton.addEventListener('click', () => {
+        max_budget.removeAttribute('readonly');
+        max_budget.focus();
+        editButton.disabled = true;
+        saveButton.disabled = false;
+    });
+
+    // Save changes
+    saveButton.addEventListener('click', () => {
+        max_budget.setAttribute('readonly', true);
+        editButton.disabled = false;
+        saveButton.disabled = true;
+    });
+	
+</script>
+
+
+
+    <!-- Firebase Initialization -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJGhK05gIL-hnl_HJubmj16dIuiP0q4JU",
+            authDomain: "residential-rental-hospitality.firebaseapp.com",
+            projectId: "residential-rental-hospitality",
+            storageBucket: "residential-rental-hospitality.firebasestorage.app",
+            messagingSenderId: "716299420732",
+            appId: "1:716299420732:web:2fb4e70235178bb0922f39",
+            measurementId: "G-GGC25RS2EY"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+    </script>
+
+
+<script>
+    // User data
+    const user = {
+        name: "John Doe",
+        email: "johndoe@email.com",
+        location: "New York City, NY",
+        age: 32
+    };
+
+    // Extract the first letter of the user's name
+    const firstLetter = user.name.charAt(0).toUpperCase();
+
+    // Update the profile picture with a generated avatar
+    const profilePicture = document.getElementById('profilePicture');
+    profilePicture.src = `https://ui-avatars.com/api/?name=${firstLetter}&size=150`;
+
+    // Dynamically update user info (if necessary)
+    document.getElementById('userName').textContent = user.name;
+</script>
+
+    <!-- Custom Script -->
+    <script type="module">
+        import { signIn } from '../js/app.js';
+
+        document.getElementById('signin-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signin-email').value.trim();
+            const password = document.getElementById('signin-password').value.trim();
+            signIn(email, password);
+        });
+    </script>
+</body>
+</html>
