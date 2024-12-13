@@ -166,3 +166,78 @@ export async function addSupportMessage(name, email, subject, message) {
     }
 
 }
+export function checkAuthStatus() {
+    onAuthStateChanged(auth, async (user) => {
+        const loginLink = document.querySelector('a[href="signin.html"]');
+        const signupLink = document.querySelector('a[href="signup.html"]');
+        const logoutLink = document.getElementById('logout');
+        const rentalPortalLink = document.querySelector('a[href="user-portal.html"]');
+        const ownerPortalLink = document.querySelector('a[href="host-properties.html"]');
+        const nav = document.querySelector('nav ul');
+
+        // Remove any existing user email or profile picture to avoid duplicates
+        const existingUserEmail = document.getElementById('user-email');
+        const existingUserProfile = document.getElementById('user-profile-pic');
+        if (existingUserEmail) existingUserEmail.remove();
+        if (existingUserProfile) existingUserProfile.remove();
+
+        if (user) {
+            // User is logged in
+            if (loginLink) loginLink.style.display = "none";
+            if (signupLink) signupLink.style.display = "none";
+            if (logoutLink) logoutLink.style.display = "inline";
+            
+            // Fetch user role from Firestore
+            try {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+
+                    if (userData.role === "user") {
+                        if (rentalPortalLink) rentalPortalLink.style.display = "inline";
+                        if (ownerPortalLink) ownerPortalLink.style.display = "none";
+                    } else if (userData.role === "owner") {
+                        if (rentalPortalLink) rentalPortalLink.style.display = "none";
+                        if (ownerPortalLink) ownerPortalLink.style.display = "inline";
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching user role:", error);
+            }
+
+            // Display user's email as the account ID
+            const userEmail = document.createElement("li");
+            userEmail.textContent = ` | ${user.email} | `;
+            userEmail.id = 'user-email';
+            userEmail.style.marginLeft = "auto";
+            nav.appendChild(userEmail);
+
+            // Display user's profile picture or default profile picture
+            const profilePic = document.createElement("li");
+            profilePic.id = 'user-profile-pic';
+            profilePic.style.marginLeft = "10px";
+            profilePic.style.marginTop = "2px";
+
+            const img = document.createElement("img");
+            img.src = user.photoURL || '/images/profile-default.svg';
+            img.alt = "User Profile";
+            img.style.width = "25px";
+            img.style.height = "25px";
+            img.style.borderRadius = "50%";
+            img.style.cursor = "pointer";
+            img.style.verticalAlign = "middle";
+            
+            profilePic.appendChild(img);
+            nav.appendChild(profilePic);
+        } else {
+            // User is not logged in
+            if (loginLink) loginLink.style.display = "inline";
+            if (signupLink) signupLink.style.display = "inline";
+            if (logoutLink) logoutLink.style.display = "none";
+
+            // Disable both portals
+            if (rentalPortalLink) rentalPortalLink.style.display = "none";
+            if (ownerPortalLink) ownerPortalLink.style.display = "none";
+        }
+    });
+}

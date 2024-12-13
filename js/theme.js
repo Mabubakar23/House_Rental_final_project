@@ -1,35 +1,56 @@
-//theme.js
-// Add event listener to the theme toggle button
-document.getElementById("theme-toggle").addEventListener("click", () => {
-    // Toggle the dark-mode class on the body
-    const isDark = document.body.classList.toggle("dark-mode");
+/**
+ * Toggle the theme between light and dark mode.
+ * Updates the DOM and persists the user's choice in localStorage.
+ */
+function toggleTheme() {
+    const isDarkMode = document.body.classList.toggle("dark-mode");
 
-    // Save the current theme in localStorage
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-});
+    // Update the localStorage with the current theme
+    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
 
-// Apply the saved theme on page load
-document.addEventListener("DOMContentLoaded", () => {
-    // Check the theme stored in localStorage
-    if (localStorage.getItem("theme") === "dark") {
+    // Update the toggle button text
+    const themeToggleButton = document.getElementById("theme-toggle");
+    if (themeToggleButton) {
+        themeToggleButton.textContent = isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode";
+    }
+}
+
+/**
+ * Apply the saved theme on page load.
+ * Checks localStorage for the previously saved theme preference.
+ */
+function applySavedTheme() {
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
         document.body.classList.add("dark-mode");
-    }
-});
-
-// Optional: Adjust theme toggle button text dynamically
-const themeToggleButton = document.getElementById("theme-toggle");
-document.addEventListener("DOMContentLoaded", () => {
-    // Update button text based on the current theme
-    if (localStorage.getItem("theme") === "dark") {
-        themeToggleButton.textContent = "Switch to Light Mode";
     } else {
-        themeToggleButton.textContent = "Switch to Dark Mode";
+        document.body.classList.remove("dark-mode");
     }
-});
 
-// Update button text when toggling
-themeToggleButton.addEventListener("click", () => {
-    themeToggleButton.textContent = document.body.classList.contains("dark-mode")
-        ? "Switch to Dark Mode"
-        : "Switch to Light Mode";
+    // Update the toggle button text accordingly
+    const themeToggleButton = document.getElementById("theme-toggle");
+    if (themeToggleButton) {
+        themeToggleButton.textContent = savedTheme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode";
+    }
+}
+
+/**
+ * Attach an event listener to the theme toggle button.
+ * Ensures functionality for toggling themes on user interaction.
+ */
+function attachThemeToggleListener() {
+    const themeToggleButton = document.getElementById("theme-toggle");
+    if (themeToggleButton) {
+        themeToggleButton.addEventListener("click", toggleTheme);
+    }
+}
+
+/**
+ * Initialize theme management on DOM content loaded.
+ * Applies saved theme and sets up event listeners.
+ */
+document.addEventListener("DOMContentLoaded", () => {
+    applySavedTheme();
+    attachThemeToggleListener();
 });

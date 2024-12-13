@@ -1,4 +1,4 @@
-//User-portal.js
+// Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import {
@@ -10,7 +10,8 @@ import {
     doc,
     arrayUnion,
     arrayRemove,
-    getDoc
+    where,
+    orderBy
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
 // Firebase configuration
@@ -29,10 +30,21 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Function to fetch all properties
-async function fetchProperties() {
+// Function to fetch properties with optional filters
+async function fetchProperties(filters = {}) {
     try {
-        const q = query(collection(db, "properties"));
+        let q = query(collection(db, "properties"), orderBy("timestamp", "desc"));
+
+        if (filters.location) {
+            q = query(q, where("location", "==", filters.location));
+        }
+        if (filters.price) {
+            q = query(q, where("price", "<=", filters.price)); // Filter by max price
+        }
+        if (filters.rooms) {
+            q = query(q, where("rooms", ">=", filters.rooms)); // Filter by minimum rooms
+        }
+
         const querySnapshot = await getDocs(q);
         return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     } catch (error) {
@@ -186,9 +198,31 @@ function addEventListeners() {
     });
 }
 
+// Add event listener for search functionality
+document.getElementById("search-button").addEventListener("click", async () => {
+    const searchBar = document.getElementById("search-bar").value.toLowerCase();
+    const filters = {};
+
+    // Parse the search bar input for location, price, or rooms
+    if (searchBar) {
+        // Example: Add more advanced parsing logic if needed
+        const locationMatch = searchBar.match(/location:\s*(\w+)/i);
+        const priceMatch = searchBar.match(/price:\s*(\d+)/i);
+        const roomsMatch = searchBar.match(/rooms:\s*(\d+)/i);
+
+        if (locationMatch) filters.location = locationMatch[1];
+        if (priceMatch) filters.price = parseInt(priceMatch[1]);
+        if (roomsMatch) filters.rooms = parseInt(roomsMatch[1]);
+    }
+
+    // Fetch and render filtered properties
+    const filteredProperties = await fetchProperties(filters);
+    renderProperties(filteredProperties);
+});
+
 // Function to fetch and render properties on page load
 async function fetchAndRenderProperties() {
-    const properties = await fetchProperties();
+    const properties = await fetchProperties(); // Fetch all properties by default
     renderProperties(properties);
 }
 
